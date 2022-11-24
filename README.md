@@ -8,6 +8,11 @@ Materiale didattico per gli studenti del corso di Computer Engineering presso il
 
 Quanto proposto è un seguito "diretto" dell'operato svolto al corso di [Ingegneria Informatica](https://github.com/Guray00/IngegneriaInformatica) presso l'Università di Pisa, che ha dimostrato essere uno strumento valido e di forte supporto agli studenti (più di 130 star). L'obbiettivo è raggiungere, nel prossimo periodo, la medesima stabilità e ricchezza di contenuto raggiunto a Pisa. Per vedere un esempio reale di funzionamento è possibile visionare [qua](https://github.com/Guray00/IngegneriaInformatica).
 
+
+## Bot Telegram
+E' disponibile un Bot Telegram per il recupero di informazioni e gruppi al seguente [link](https://t.me/inginf_bot).
+
+
 ## Credits (in aggiornamento)
 Questo progetto si basa sull'aiuto spontaneo da parte degli studenti. Ogni contributo è gradito!
 
