@@ -9,7 +9,7 @@
 |   |   |
 -->
 
-- **Professore**: Marchetti Guido
+- **Professori**: Baldi Mario, Claudio Casetti, Marchetto Guido, Valenza Fulvio
 - **Codice**: 02KPNOV
 - [**Telegram**](https://t.me/joinchat/AWHhTUMRFDxRXUd9aDxiEA)
 - **CFU**: 6
