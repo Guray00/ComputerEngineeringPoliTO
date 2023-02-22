@@ -1,0 +1,68 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000                 EXPORT           count_bits_to_1
+    3 00000000         
+    4 00000000 46EC    count_bits_to_1
+                               MOV              r12, sp
+    5 00000002 E92D 4DF0       STMFD            sp!, {r4-r8, r10-r11, lr}
+    6 00000006         
+    7 00000006 F04F 0500       MOV              r5, #0
+    8 0000000A F04F 0701       MOV              r7, #1
+    9 0000000E F04F 0820       MOV              r8, #32
+   10 00000012 4238    loop    TST              r0, r7
+   11 00000014 BF18 1C6D       ADDNE            r5, r5, #1
+   12 00000018 EA4F 0747       LSL              r7, r7, #1
+   13 0000001C F1B8 0801       SUBS             r8, r8, #1
+   14 00000020 D1F7            BNE              loop
+   15 00000022         
+   16 00000022         
+   17 00000022         
+   18 00000022         
+   19 00000022 4628            MOV              r0, r5
+   20 00000024 E8BD 8DF0       LDMFD            sp!,{r4-r8,r10-r11,pc}
+   21 00000028         
+   22 00000028                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\count_bits_to_1.d -o.\count_bits_to_1.o -I.\RTE\_Target_1 -IC:\U
+sers\marco\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\User
+s\marco\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.0\Device\Include --predefi
+ne="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="_RTE_ 
+SETA 1" --predefine="LPC175x_6x SETA 1" --predefine="_RTE_ SETA 1" --list=.\cou
+nt_bits_to_1.lst count_bits_to_1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file count_bits_to_1.s
+   Uses
+      None
+Comment: asm_func unused
+count_bits_to_1 00000000
+
+Symbol: count_bits_to_1
+   Definitions
+      At line 4 in file count_bits_to_1.s
+   Uses
+      At line 2 in file count_bits_to_1.s
+Comment: count_bits_to_1 used once
+loop 00000012
+
+Symbol: loop
+   Definitions
+      At line 10 in file count_bits_to_1.s
+   Uses
+      At line 14 in file count_bits_to_1.s
+Comment: loop used once
+3 symbols
+337 symbols in table

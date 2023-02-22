@@ -1,0 +1,1 @@
+La seconda soluzione è stata proposta in quanto la prima ha un errore dovuto alla presenza di 3 istanze con CDB  12 nel secondo esercizio (Tomasulo)

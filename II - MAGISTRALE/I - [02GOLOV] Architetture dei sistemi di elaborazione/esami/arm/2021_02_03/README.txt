@@ -1,0 +1,1 @@
+Soluzione ARM funzionante ma non si sa se priva di bug

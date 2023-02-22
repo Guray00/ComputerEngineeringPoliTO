@@ -1,0 +1,71 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000                 AREA             asm_functions, CODE, READONLY
+    3 00000000                 EXPORT           divisible
+    4 00000000         divisible
+    5 00000000         ; save current SP for a faster access 
+    6 00000000         ; to parameters in the stack
+    7 00000000 46EC            MOV              r12, sp
+    8 00000002         ; save volatile registers
+    9 00000002 E92D 4DF0       STMFD            sp!,{r4-r8,r10-r11,lr}
+   10 00000006         lab_1
+   11 00000006 4281            cmp              r1, r0
+   12 00000008 D802            bhi              end_asmf
+   13 0000000A EBA0 0001       sub              r0, r0, r1
+   14 0000000E E7FA            b                lab_1
+   15 00000010         
+   16 00000010         end_asmf
+   17 00000010         ; setup a value for R0 to return
+   18 00000010         ; restore volatile registers
+   19 00000010 E8BD 8DF0       LDMFD            sp!,{r4-r8,r10-r11,pc}
+   20 00000014         
+   21 00000014                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=.\divisi
+ble.d -o.\divisible.o -IC:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC -IC:\Users
+\Andrea\Desktop\Keil474\ARM\CMSIS\Include -IC:\Users\Andrea\Desktop\Keil474\ARM
+\Inc\NXP\LPC17xx --predefine="__EVAL SETA 1" --list=.\divisible.lst divisible.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_functions 00000000
+
+Symbol: asm_functions
+   Definitions
+      At line 2 in file divisible.s
+   Uses
+      None
+Comment: asm_functions unused
+divisible 00000000
+
+Symbol: divisible
+   Definitions
+      At line 4 in file divisible.s
+   Uses
+      At line 3 in file divisible.s
+Comment: divisible used once
+end_asmf 00000010
+
+Symbol: end_asmf
+   Definitions
+      At line 16 in file divisible.s
+   Uses
+      At line 12 in file divisible.s
+Comment: end_asmf used once
+lab_1 00000006
+
+Symbol: lab_1
+   Definitions
+      At line 10 in file divisible.s
+   Uses
+      At line 14 in file divisible.s
+Comment: lab_1 used once
+4 symbols
+335 symbols in table

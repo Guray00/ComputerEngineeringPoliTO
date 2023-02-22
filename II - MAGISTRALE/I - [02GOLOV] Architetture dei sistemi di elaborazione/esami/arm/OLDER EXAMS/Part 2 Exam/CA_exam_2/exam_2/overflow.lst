@@ -1,0 +1,101 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000                 EXPORT           overflow
+    3 00000000         
+    4 00000000 46EC    overflow
+                               MOV              r12, sp
+    5 00000002 E92D 4DF0       STMFD            sp!, {r4-r8, r10-r11, lr}
+    6 00000006         
+    7 00000006 F04F 0500       MOV              r5, #0
+    8 0000000A 460C            MOV              r4, r1
+    9 0000000C 6806    next    LDR              r6, [r0]
+   10 0000000E 19AD            ADDS             R5,R5,R6
+   11 00000010 D60A            BVS              return0
+   12 00000012 D206            BCS              return1
+   13 00000014 F100 0004       ADD              R0,R0,#4
+   14 00000018 1E40            SUBS             R0,R0, #1
+   15 0000001A D1F7            BNE              next
+   16 0000001C         
+   17 0000001C F04F 0002       MOV              r0,#2
+   18 00000020 E005            B                exit
+   19 00000022         
+   20 00000022 F04F 0001 
+                       return1 MOV              r0, #1
+   21 00000026 E002            B                exit
+   22 00000028         
+   23 00000028         
+   24 00000028 F04F 0000 
+                       return0 MOV              r0,#0
+   25 0000002C E7FF            B                exit
+   26 0000002E         
+   27 0000002E E8BD 8DF0 
+                       exit    LDMFD            sp!,{r4-r8,r10-r11,pc}
+   28 00000032         
+   29 00000032                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=.\overfl
+ow.d -o.\overflow.o -IC:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC -IC:\Users\A
+ndrea\Desktop\Keil474\ARM\CMSIS\Include -IC:\Users\Andrea\Desktop\Keil474\ARM\I
+nc\NXP\LPC17xx --predefine="__EVAL SETA 1" --list=.\overflow.lst overflow.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file overflow.s
+   Uses
+      None
+Comment: asm_func unused
+exit 0000002E
+
+Symbol: exit
+   Definitions
+      At line 27 in file overflow.s
+   Uses
+      At line 18 in file overflow.s
+      At line 21 in file overflow.s
+      At line 25 in file overflow.s
+
+next 0000000C
+
+Symbol: next
+   Definitions
+      At line 9 in file overflow.s
+   Uses
+      At line 15 in file overflow.s
+Comment: next used once
+overflow 00000000
+
+Symbol: overflow
+   Definitions
+      At line 4 in file overflow.s
+   Uses
+      At line 2 in file overflow.s
+Comment: overflow used once
+return0 00000028
+
+Symbol: return0
+   Definitions
+      At line 24 in file overflow.s
+   Uses
+      At line 11 in file overflow.s
+Comment: return0 used once
+return1 00000022
+
+Symbol: return1
+   Definitions
+      At line 20 in file overflow.s
+   Uses
+      At line 12 in file overflow.s
+Comment: return1 used once
+6 symbols
+337 symbols in table

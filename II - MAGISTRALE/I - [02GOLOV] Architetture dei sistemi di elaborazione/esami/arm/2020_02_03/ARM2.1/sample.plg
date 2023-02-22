@@ -1,0 +1,138 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Barbara Rizzioli\Desktop\sample\sample.uvproj
+Project File Date:  10/01/2014
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling startup_LPC17xx.s...
+compiling sample.c...
+compiling core_cm3.c...
+compiling system_LPC17xx.c...
+compiling funct_timer.c...
+compiling IRQ_timer.c...
+compiling lib_timer.c...
+compiling funct_led.c...
+compiling lib_led.c...
+compiling lib_adc.c...
+compiling IRQ_adc.c...
+adc\IRQ_adc.c(47): warning:  #223-D: function "sprintf" declared implicitly
+compiling IRQ_systick.c...
+compiling IRQ_button.c...
+compiling lib_button.c...
+compiling AsciiLib.c...
+compiling GLCD.c...
+compiling HzLib.c...
+compiling lib_Serial.c...
+compiling IRQ_serial.c...
+linking...
+Program Size: Code=16944 RO-data=1852 RW-data=56 ZI-data=608  
+"sample.axf" - 0 Error(s), 1 Warning(s).
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+USB Communication Failure
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+USB Communication Failure
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+USB Communication Failure
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+USB Communication Failure
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+USB Communication Failure
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+Set JLink Project File to "C:\Users\Barbara Rizzioli\Desktop\sample\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.20c, compiled Sep 24 2010 19:46:42
+Firmware: J-Link ARM-OB STM32 compiled Aug 22 2012 19:52:04
+Hardware: V7.00
+Feature(s) : RDI,FlashDL,FlashBP,JFlash,GDBFull 
+ 
+* JLink Info: TotalIRLen = 4, IRPrint = 0x01
+* JLink Info: Found Cortex-M3 r2p0, Little endian.
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: LPC1768
+VTarget = 3.300V
+State of Pins: 
+TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
+* JLink Info: TotalIRLen = 4, IRPrint = 0x01
+* JLink Info: Found Cortex-M3 r2p0, Little endian.
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 2000 kHz
+ 
+No Algorithm found for: 00000000H - 000049A3H
+Erase skipped!
+Load "C:\\Users\\Barbara Rizzioli\\Desktop\\sample\\sample.AXF" 
+Set JLink Project File to "C:\Users\Barbara Rizzioli\Desktop\sample\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.20c, compiled Sep 24 2010 19:46:42
+Firmware: J-Link ARM-OB STM32 compiled Aug 22 2012 19:52:04
+Hardware: V7.00
+Feature(s) : RDI,FlashDL,FlashBP,JFlash,GDBFull 
+ 
+* JLink Info: TotalIRLen = 4, IRPrint = 0x01
+* JLink Info: Found Cortex-M3 r2p0, Little endian.
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: LPC1768
+VTarget = 3.300V
+State of Pins: 
+TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
+* JLink Info: TotalIRLen = 4, IRPrint = 0x01
+* JLink Info: Found Cortex-M3 r2p0, Little endian.
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 2000 kHz
+ 
+No Algorithm found for: 00000000H - 000049A3H
+Erase skipped!
+Build target 'Target 1'
+assembling startup_LPC17xx.s...
+compiling sample.c...
+compiling core_cm3.c...
+compiling system_LPC17xx.c...
+compiling funct_led.c...
+compiling lib_led.c...
+compiling IRQ_button.c...
+compiling lib_button.c...
+linking...
+sample.axf: Error: L6218E: Undefined symbol AD_current (referred from irq_button.o).
+sample.axf: Error: L6218E: Undefined symbol LED_DISPLAY (referred from irq_button.o).
+Target not created
+Build target 'Target 1'
+assembling startup_LPC17xx.s...
+compiling sample.c...
+compiling core_cm3.c...
+compiling system_LPC17xx.c...
+compiling funct_led.c...
+compiling lib_led.c...
+compiling IRQ_button.c...
+compiling lib_button.c...
+linking...
+Program Size: Code=1256 RO-data=236 RW-data=8 ZI-data=608  
+"sample.axf" - 0 Error(s), 0 Warning(s).

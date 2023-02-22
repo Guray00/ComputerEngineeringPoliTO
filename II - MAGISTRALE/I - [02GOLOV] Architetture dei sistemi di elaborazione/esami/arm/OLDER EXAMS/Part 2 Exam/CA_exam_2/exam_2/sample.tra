@@ -1,0 +1,26 @@
+*** Creating Trace Output File 'sample.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '"startup_lpc17xx.o"'
+### List of Objects: adding '"sample.o"'
+### List of Objects: adding '"core_cm3.o"'
+### List of Objects: adding '"system_lpc17xx.o"'
+### List of Objects: adding '"funct_led.o"'
+### List of Objects: adding '"lib_led.o"'
+### List of Objects: adding '"irq_button.o"'
+### List of Objects: adding '"lib_button.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M3 "startup_lpc17xx.o" "sample.o" "core_cm3.o" "system_lpc17xx.o" "funct_led.o" "lib_led.o" "irq_button.o" "lib_button.o" --strict --scatter "sample.sct" 
+--autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\sample.map" -o "sample.axf"### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: 'sample.axf'
+### ADS-LD Command File: 'sample.lnp'
+### Checking for dirty Components...
+### Creating CmdFile 'sample.lnp', Handle=0x0000082C
+### Writing '.lnp' file
+### ADS-LD Command file 'sample.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

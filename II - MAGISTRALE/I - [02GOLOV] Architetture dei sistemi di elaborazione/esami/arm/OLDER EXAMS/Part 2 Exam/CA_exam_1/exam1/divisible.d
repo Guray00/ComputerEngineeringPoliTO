@@ -1,0 +1,1 @@
+.\divisible.o: divisible.s

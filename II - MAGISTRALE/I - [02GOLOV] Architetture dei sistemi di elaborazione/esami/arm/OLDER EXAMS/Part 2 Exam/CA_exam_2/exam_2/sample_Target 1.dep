@@ -1,0 +1,113 @@
+Dependencies for Project 'sample', Target 'Target 1': (DO NOT MODIFY !)
+F (.\startup_LPC17xx.s)(0x4CCA9FEA)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx--list .\startup_lpc17xx.lst --xref -o .\startup_lpc17xx.o --depend .\startup_lpc17xx.d)
+F (.\sample.c)(0x5C727879)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\sample.o --omf_browse .\sample.crf --depend .\sample.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdio.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\LPC17xx.H)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (led/led.h)(0x542940A4)
+I (button_EXINT/button.h)(0x5A36980A)
+I (timer/timer.h)(0x5C18CB60)
+I (RIT/RIT.h)(0x5C18CD48)
+I (joystick/joystick.h)(0x5C290304)
+F (.\core_cm3.c)(0x4AC98EBC)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\core_cm3.o --omf_browse .\core_cm3.crf --depend .\core_cm3.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+F (.\system_LPC17xx.c)(0x54241208)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\system_lpc17xx.o --omf_browse .\system_lpc17xx.crf --depend .\system_lpc17xx.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\LPC17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+F (.\led\funct_led.c)(0x5C05B843)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\funct_led.o --omf_browse .\funct_led.crf --depend .\funct_led.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (led\led.h)(0x542940A4)
+F (.\led\lib_led.c)(0x5C0779E9)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\lib_led.o --omf_browse .\lib_led.crf --depend .\lib_led.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (led\led.h)(0x542940A4)
+F (.\led\led.h)(0x542940A4)()
+F (.\button_EXINT\button.h)(0x5A36980A)()
+F (.\button_EXINT\IRQ_button.c)(0x5C290AE1)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\irq_button.o --omf_browse .\irq_button.crf --depend .\irq_button.d)
+I (button_EXINT\button.h)(0x5A36980A)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+F (.\button_EXINT\lib_button.c)(0x5C086F2B)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\lib_button.o --omf_browse .\lib_button.crf --depend .\lib_button.d)
+I (button_EXINT\button.h)(0x5A36980A)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+F (.\timer\IRQ_timer.c)(0x5C11C6B4)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\irq_timer.o --omf_browse .\irq_timer.crf --depend .\irq_timer.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (timer\timer.h)(0x5C18CB60)
+F (.\timer\lib_timer.c)(0x5C727727)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\lib_timer.o --omf_browse .\lib_timer.crf --depend .\lib_timer.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (timer\timer.h)(0x5C18CB60)
+F (.\timer\timer.h)(0x5C18CB60)()
+F (.\RIT\IRQ_RIT.c)(0x5C727D6C)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\irq_rit.o --omf_browse .\irq_rit.crf --depend .\irq_rit.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (RIT\RIT.h)(0x5C18CD48)
+I (RIT\../led/led.h)(0x542940A4)
+I (RIT\../timer/timer.h)(0x5C18CB60)
+F (.\RIT\lib_RIT.c)(0x5C1ABDCD)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\lib_rit.o --omf_browse .\lib_rit.crf --depend .\lib_rit.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (RIT\RIT.h)(0x5C18CD48)
+F (.\RIT\RIT.h)(0x5C18CD48)()
+F (.\overflow.s)(0x5C727D51)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx--list .\overflow.lst --xref -o .\overflow.o --depend .\overflow.d)
+F (.\joystick\funct_joystick.c)(0x5C2907E1)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\funct_joystick.o --omf_browse .\funct_joystick.crf --depend .\funct_joystick.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (joystick\joystick.h)(0x5C290304)
+I (joystick\../led/led.h)(0x542940A4)
+F (.\joystick\joystick.h)(0x5C290304)()
+F (.\joystick\lib_joystick.c)(0x5C727727)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Users\Andrea\Desktop\Keil474\ARM\RV31\INC-I C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include-I C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx-o .\lib_joystick.o --omf_browse .\lib_joystick.crf --depend .\lib_joystick.d)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\lpc17xx.h)(0x532C567C)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cm3.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\ARMCC\include\stdint.h)(0x51C819B4)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmInstr.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\CMSIS\Include\core_cmFunc.h)(0x532C5A32)
+I (C:\Users\Andrea\Desktop\Keil474\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x532C567C)
+I (joystick\joystick.h)(0x5C290304)

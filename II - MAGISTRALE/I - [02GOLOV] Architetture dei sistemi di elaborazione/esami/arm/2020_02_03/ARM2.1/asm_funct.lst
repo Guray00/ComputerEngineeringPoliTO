@@ -1,0 +1,96 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         
+    3 00000000                 AREA             asm_functions, CODE, READONLY
+    4 00000000                 EXPORT           get_and_sort
+    5 00000000         get_and_sort
+    6 00000000         ; save current SP for a faster access 
+    7 00000000         ; to parameters in the stack
+    8 00000000 46EC            MOV              r12, sp
+    9 00000002         ; save volatile registers
+   10 00000002 E92D 4DF0       STMFD            sp!,{r4-r8,r10-r11,lr}
+   11 00000006         ; extract argument 4 and 5 into R4 and R5
+   12 00000006         
+   13 00000006         ; posizione libera n 
+   14 00000006         
+   15 00000006         ; for (i=n-1 ; i>=0 && trovato ; i--)
+   16 00000006         ; if val > vett[i]
+   17 00000006         ;   vett[i+1] = vett[i]
+   18 00000006         ; else
+   19 00000006         ;  vett[i] = val
+   20 00000006         ;  trovato = 1
+   21 00000006         
+   22 00000006         ; r0 = vett
+   23 00000006         ; r1 = val
+   24 00000006         ; r2 = n
+   25 00000006         ; r3 = n-1
+   26 00000006         
+   27 00000006 4402            add              r2, r0, r2
+   28 00000008         
+   29 00000008 F1A2 0201 
+                       loop    sub              r2, r2, #1
+   30 0000000C F1A2 0301       sub              r3, r2, #1
+   31 00000010 4298            cmp              r0, r3
+   32 00000012 D805            bhi              fine
+   33 00000014 781C            ldrb             r4, [r3]
+   34 00000016 428C            cmp              r4, r1
+   35 00000018 BF38 7014       strblo           r4, [r2]
+   36 0000001C D800            bhi              fine
+   37 0000001E E7F3            b                loop
+   38 00000020         ; setup a value for R0 to return
+   39 00000020 7011    fine    strb             r1, [r2]
+   40 00000022 4608            MOV              r0, r1
+   41 00000024         ; restore volatile registers
+   42 00000024 E8BD 8DF0       LDMFD            sp!,{r4-r8,r10-r11,pc}
+   43 00000028         
+   44 00000028                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\asm_funct.d -o.\asm_funct.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_
+v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\INC\NXP\LPC17xx --predefine="__UVISION_VE
+RSION SETA 526" --list=.\asm_funct.lst RIT\ASM_funct.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_functions 00000000
+
+Symbol: asm_functions
+   Definitions
+      At line 3 in file RIT\ASM_funct.s
+   Uses
+      None
+Comment: asm_functions unused
+fine 00000020
+
+Symbol: fine
+   Definitions
+      At line 39 in file RIT\ASM_funct.s
+   Uses
+      At line 32 in file RIT\ASM_funct.s
+      At line 36 in file RIT\ASM_funct.s
+
+get_and_sort 00000000
+
+Symbol: get_and_sort
+   Definitions
+      At line 5 in file RIT\ASM_funct.s
+   Uses
+      At line 4 in file RIT\ASM_funct.s
+Comment: get_and_sort used once
+loop 00000008
+
+Symbol: loop
+   Definitions
+      At line 29 in file RIT\ASM_funct.s
+   Uses
+      At line 37 in file RIT\ASM_funct.s
+Comment: loop used once
+4 symbols
+335 symbols in table

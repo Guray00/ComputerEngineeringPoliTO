@@ -1,0 +1,9 @@
+irq_serial.o: serial\IRQ_serial.c
+irq_serial.o: serial\Serial.h
+irq_serial.o: serial\../GLCD/GLCD.h
+irq_serial.o: C:\Keil\ARM\INC\NXP\LPC17xx\LPC17xx.h
+irq_serial.o: C:\Keil\ARM\RV31\INC\core_cm3.h
+irq_serial.o: C:\Keil\ARM\RV31\INC\stdint.h
+irq_serial.o: C:\Keil\ARM\RV31\INC\core_cmInstr.h
+irq_serial.o: C:\Keil\ARM\RV31\INC\core_cmFunc.h
+irq_serial.o: C:\Keil\ARM\INC\NXP\LPC17xx\system_LPC17xx.h
