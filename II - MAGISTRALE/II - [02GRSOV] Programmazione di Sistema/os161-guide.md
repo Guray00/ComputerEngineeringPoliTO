@@ -1,4 +1,4 @@
-# Os161 
+# Os161
 
 ## Inizializzare il nuovo kernel
 
@@ -64,7 +64,7 @@ Blocca il kernel se l'espressione è falsa, causando panic.
 
 ## Syscall
 
-Che syscall più interne solitamente utiizzano un doppio `_`
+Che syscall più interne solitamente utilizzano un doppio `_`
 
 ## Sync
 
@@ -77,12 +77,5 @@ Attesa attiva. Utile per fare cose rapide. vengono utilizzati dai wait channel.
 Non ha attesa attiva, è leggermente più lento. Vengono utilizzate dalle conditional variables.
 
 Il semaforo non protegge da un errore perchè non c'è controllo su chi rilascia o meno, è necessario verificare che chi rilascia sia esattamente chi lo ha richiesto.
-
-
-## bho 
-
-```gdb
--exec p/x tf->tf_a1
-```
 
 
