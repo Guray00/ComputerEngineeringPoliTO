@@ -1,5 +1,7 @@
 # Domande es 4
 
+La lista mostrata è non esaustiva e contiene un elenco di domande che sono state proposte come quarto esercizio nel corso degli anni.
+
 ## Generici
 
 - Baseline sta a versioni di sistema come codeline sta a versioni di componente. (F)
