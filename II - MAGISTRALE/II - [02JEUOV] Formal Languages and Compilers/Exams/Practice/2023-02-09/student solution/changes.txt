@@ -1,0 +1,26 @@
+Changes and differences between labinf test version and final version:
+
+Main.java:
+-changed scanner class name from "Ylex" to "scanner"
+
+scanner.jflex:
+-changed "hex1" to include lower case hexadecimal symbols
+-changed "token1" to include spaces before ";"
+-added "binary" to handle binary number at the end of <tok2>
+-changed "token2" to include spaces before ";"
+-changed "w" to also include real numbers with more than one number of decimals
+-changed "qstring" from \"~\" to \" ~ \"
+-integer symbol is now returned using parseInt method for conversion from String yytext()
+-float symbols are now returned using parseFloat method for conversion from String yytext()
+
+parser.cup:
+-removed unused terminal symbols
+-changed non terminal symbol "Food" to "Foods" because it conflicted with another existing non terminal
+-changed "Header" grammar rules to avoid parser conflicts
+-removed unused precedence and associative rules
+-changed global table type from "HashMap<String, SortedMap<String, Float>>" to "HashMap<String, HashMap<String, Float>>"
+-added "report_error" method (although unused)
+-inside the action code section, some slight naming changes to FoodEntry class methods and attributes (functionality remains unchanged), then added methods "getmin(...)", "getmax(...)" to get min and max price values and completed "printmin(...)", "printmax(...)" to print food section output
+-changed or added types to various non terminal symbols
+-completed or added semantic actions to grammar rules as required
+-fixed typo in semantic rules for QSTRING values

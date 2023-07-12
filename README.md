@@ -23,5 +23,7 @@ I ringraziamenti sono in ordine alfabetico, molto materiale è di anni precedent
 - [Marco Lampis](https://github.com/Guray00)<br>
 
 **Collaboratori Materiale**<br>
-In attesa...<br><br>
+- Alessandro Bottisio<br>
+
+<br>
 Per richiedere l'autorizzazione per aggiungere file _(o mandare semplicemente a noi un file per caricarlo)_ è consigliato scrivere agli studenti che si occupano della gestione o aprire una issue su questo progetto.

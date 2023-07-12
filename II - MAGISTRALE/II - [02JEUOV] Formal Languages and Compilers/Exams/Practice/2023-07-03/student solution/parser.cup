@@ -1,0 +1,106 @@
+/*************************
+ Parser
+**************************/
+
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with {:
+    table = new HashMap<String, HashMap<String, Integer>>();
+:};
+
+parser code {:
+
+    public HashMap<String, HashMap<String, Integer>> table;
+    // To access semantic values
+	
+    public Object stack(int position){
+    	// returns the object at the specified position
+	// from the top (tos) of the stack
+	return(((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+
+
+//////////////////////////////////
+///// SYMBOLS DECLARATION
+/////////////////////////////////
+
+terminal TOK1, TOK2, TOK3, SEP, DOT, CM, S, RO, RC, AND, OR, NOT, EQUAL;
+terminal HOUSE, STRT, END, IF, THEN, FI, PRINT;
+terminal String QSTRING;
+terminal Integer INT;
+
+non terminal File, Head, Houses, Preferences, tok3, house, if_cmd;
+non terminal HashMap roomlist;
+non terminal Object[] room;
+non terminal Boolean boolexpr;
+non terminal Integer roomref;
+non terminal String printlist, print;
+
+precedence left OR;
+precedence left AND;
+precedence left NOT;
+precedence nonassoc RO, RC;
+precedence nonassoc EQUAL;
+
+//////////////////////////////////
+///// GRAMMAR
+/////////////////////////////////
+
+start with File;
+
+File ::= Head SEP Houses SEP Preferences;
+Head ::= tok3 TOK1 tok3 TOK2 tok3 | tok3 TOK2 tok3 TOK1 tok3;
+tok3 ::= tok3 TOK3 | ;
+Houses ::= Houses house house | house house;
+house ::= HOUSE QSTRING:type STRT roomlist:rlist END {:
+                                            parser.table.put(type, rlist);
+                                            :};
+roomlist ::= roomlist:rlist CM room:r {:
+                      rlist.put(r[0], r[1]);
+                      RESULT = rlist;     
+                             :}
+            | room:r {: 
+                      RESULT = new HashMap<String, Integer>(); 
+                      RESULT.put(r[0], r[1]);     
+                :};
+room ::= QSTRING:roomname INT:size {:
+                                    RESULT = new Object[2];
+                                    RESULT[0] = (String) roomname;
+                                    RESULT[1] = (Integer) size;
+                                :};
+Preferences ::= Preferences if_cmd | ;
+if_cmd ::= IF boolexpr:bexpr THEN printlist:plist FI {: 
+                                            if(bexpr) System.out.println(plist);
+                                        :};
+boolexpr ::= RO boolexpr:bexpr RC {:
+                               RESULT = bexpr ;
+                        :}
+        | boolexpr:b1 AND boolexpr:b2 {:
+                               RESULT = b1 && b2 ;
+                        :}
+        | boolexpr:b1 OR boolexpr:b2 {:
+                               RESULT = b1 || b2 ;
+                        :}
+        | NOT boolexpr:bexpr {:
+                               RESULT = !bexpr ;
+                        :}
+        | roomref:ref EQUAL INT:size {:
+                                if(ref == size) RESULT = true;
+                                else  RESULT = false;
+                                :};
+roomref ::= QSTRING:type DOT QSTRING:roomname {:
+                                            if (parser.table.get(type) != null) RESULT = parser.table.get(type).get(roomname);  
+                                            else RESULT = null;                                          
+                                            :};
+printlist ::= printlist:plist print:p {: 
+                                            RESULT = plist + "\n" + p;
+                                        :}
+            | print:p                       {: 
+                                            RESULT = p;
+                                        :};
+print ::= PRINT QSTRING:q S {: RESULT = q; :};

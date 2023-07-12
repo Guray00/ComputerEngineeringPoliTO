@@ -1,0 +1,24 @@
+(*- Header section -*)
+2022/11/15$2023/03/30%2023/02/28-1111; (*- tok2 -*)
+%%*%*%*%%%%*%%2a+3B+aBC ;              (*- tok1 -*)
+2022/12/04$2023/01/02$2023/01/01 ;     (*- tok2 -*)
+
+$$$$ (*- division between header and food sections -*)
+(*- Available food -*)
+"low price" : [
+    "flour": 1.00 EURO/kg, "tomato sauce" : 8.00 EURO/kg,
+    "mozzarella cheese" : 15.00 EURO/kg
+];
+
+"medium price" : [
+    "flour": 1.50 EURO/kg, "tomato sauce" : 10.00 EURO/kg,
+    "mozzarella cheese" : 21.00 EURO/kg, "tomatoes" : 13.00 EURO/kg
+];
+
+$$$$$$ (*- division between food and recipes sections -*)
+(*- 2*0.6*1.00 = 1.20 -*)
+2 "bread" "low price"."flour" 0.6 kg;   (*- Note that the ":" is optional -*)
+(*- 3*0.4*1.50+3*0.2*8.00+3*0.1*21.00 = 1.80+4.80+6.30 = 12.90 -*)
+3 "pizza" : "medium price"."flour" 0.4 kg, "low price"."tomato sauce" 0.2 kg,
+            "medium price"."mozzarella cheese" 0.1 kg;
+            

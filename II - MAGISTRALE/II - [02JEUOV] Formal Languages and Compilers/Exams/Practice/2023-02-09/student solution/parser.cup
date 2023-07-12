@@ -1,0 +1,288 @@
+/*************************
+ Parser
+**************************/
+
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.text.*;
+
+init with {:
+    foodTable = new HashMap<String, HashMap<String, Float>>();
+:};
+
+parser code {:
+
+    public HashMap<String, HashMap<String, Float>> foodTable;
+    // To access semantic values
+	
+	public void report_error(String message, Object info) {
+		StringBuffer m = new StringBuffer(message);
+		if (info instanceof Symbol) {
+			if (((Symbol)info).left != -1 && ((Symbol)info).right != -1) {
+				int line = (((Symbol)info).left)+1;
+				int column = (((Symbol)info).right)+1;
+				m.append(" (linea "+line+", colonna "+column+")");
+			}
+		}
+		System.err.println(m);
+	}
+
+    public Object stack ( int position){
+    	// returns the object at the specified position
+	// from the top (tos) of the stack
+	return(((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+action code {:
+
+	public class FoodEntry {
+		private String name;
+		private Float floatValue;
+	    
+		public FoodEntry(String X, Float Y){
+			this.name = X;
+			this.floatValue = Y;
+		};
+
+		public String getName() {
+			return this.name;
+		};
+
+		public Float getFloatValue() {
+			return this.floatValue;
+		};
+
+	};   
+    
+	public List<FoodEntry> getmin(List<FoodEntry> fl1, List<FoodEntry> fl2, List<FoodEntry> foodlist){
+		List<FoodEntry> result = new ArrayList<FoodEntry>(); // list to fill
+		List<FoodEntry> temp = new ArrayList<FoodEntry>(); // list to iterate
+		Float min = 0.0f;
+		final Float THRESHOLD = .001f;
+		//fill iteration list
+		if(fl1 != null) temp.addAll(fl1);
+		if(fl2 != null) temp.addAll(fl2);
+		if(foodlist != null) temp.addAll(foodlist);
+		if (temp.size() == 0) return temp;
+		//search for lowest value
+		for (int i = 0; i < temp.size(); i++) {
+			if(i == 0) min = temp.get(0).getFloatValue();
+			else if (min > temp.get(i).getFloatValue()) min = temp.get(i).getFloatValue();	
+		}
+		for (int i = 0; i < temp.size(); i++) {
+			if(Math.abs(min - temp.get(i).getFloatValue()) < THRESHOLD) result.add(temp.get(i));
+		}
+		return result;
+	};
+
+	public List<FoodEntry> getmax(List<FoodEntry> fl1, List<FoodEntry> fl2, List<FoodEntry> foodlist){
+		List<FoodEntry> result = new ArrayList<FoodEntry>(); // list to fill
+		List<FoodEntry> temp = new ArrayList<FoodEntry>(); // list to iterate
+		Float max = 0.0f;
+		final Float THRESHOLD = .001f;
+		//fill iteration list
+		if(fl1 != null) temp.addAll(fl1);
+		if(fl2 != null) temp.addAll(fl2);
+		if(foodlist != null) temp.addAll(foodlist);
+		if (temp.size() == 0) return temp;
+		//search for lowest value
+		for (int i = 0; i < temp.size(); i++) {
+			if(i == 0) max = temp.get(0).getFloatValue();
+			else if (max < temp.get(i).getFloatValue()) max = temp.get(i).getFloatValue();	
+		}
+		for (int i = 0; i < temp.size(); i++) {
+			if(Math.abs(max - temp.get(i).getFloatValue()) < THRESHOLD) result.add(temp.get(i));
+		}
+		return result;
+	};
+    
+	
+	public void printmin(List<FoodEntry> foodList){
+		if(foodList != null) {
+			DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+			otherSymbols.setDecimalSeparator('.');
+			DecimalFormat df = new DecimalFormat("0.00", otherSymbols);
+			String	output = "Less expensive: ";
+			for (int i = 0; i < foodList.size(); i++) {
+				output += foodList.get(i).getName() + " " +  df.format(foodList.get(i).getFloatValue()) + " EURO/kg";
+				if(i < (foodList.size()-1)) output += ", ";
+			}
+			System.out.println(output);
+		}
+	}
+
+	public void printmax(List<FoodEntry> foodList){
+		if(foodList != null) {
+			DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+			otherSymbols.setDecimalSeparator('.');
+			DecimalFormat df = new DecimalFormat("0.00", otherSymbols);
+			String	output = "More expensive: ";
+			for (int i = 0; i < foodList.size(); i++) {
+				output += foodList.get(i).getName() + " " +  df.format(foodList.get(i).getFloatValue()) + " EURO/kg";
+				if(i < (foodList.size()-1)) output += ", ";
+			}
+			System.out.println(output);
+		}
+	}
+:};
+
+// Terminal tokens
+terminal TOK2, TOK1, SEP;
+terminal EKG, KG;
+terminal String QSTRING;
+terminal Integer INT;
+terminal Float REAL, WEIGHT;
+terminal DD, SO, SC, S, CM, DOT;
+
+
+// Non terminal tokens
+non terminal File, Header;
+non terminal tok2, dd;
+non terminal String FCatName, FoodName, RecipeName, Recipe, Recipes;
+non terminal List<FoodEntry>[] Foods;
+non terminal List<FoodEntry> FoodList, FoodCat, IngredList;
+non terminal FoodEntry Food, Ingredient;
+
+//////////////////////////////////////
+// Grammar start
+//////////////////////////////////////
+
+start with File;
+
+File ::= Header SEP Foods:foods SEP Recipes:recipes {:
+							//print lowest price foods
+							printmin(foods[0]);
+							//print highest price foods
+							printmax(foods[1]);
+							//print recipes output if any
+							if(recipes.length() != 0) {
+								System.out.println("----");
+								System.out.print(recipes); 
+							}
+						:};
+
+Header ::= tok2 TOK1 | TOK1 tok2 | tok2 TOK1 tok2 | tok2 TOK1 TOK2 | TOK2 TOK1 tok2 | TOK2 TOK1 TOK2 ;
+tok2 ::= tok2 TOK2 | TOK2 TOK2;
+
+Foods ::= Foods:foods FoodCat:fc1 FoodCat:fc2 {:
+							//initiate lowest/highest price food lists container
+							RESULT = new List[2];
+							//update lowest price foods list
+							RESULT[0] = getmin(fc1, fc2, foods[0]);
+							//update highest price foods list
+							RESULT[1] = getmax(fc1, fc2, foods[1]);
+						:}
+					|	{:
+							//initiate lowest/highest price food lists container
+							RESULT = new List[2];
+							//initiate lowest price foods list
+							RESULT[0] = new ArrayList<FoodEntry>();
+							//initiate highest price foods list
+							RESULT[1] = new ArrayList<FoodEntry>();
+						:};
+
+FoodCat ::= FCatName:id DD SO FoodList:list SC S {: 
+							//add food category to global food list
+							if(list.size() > 0) {
+								//create global table entry value
+								HashMap<String, Float> hmap = new HashMap<String, Float>();
+								//fill entry values
+								for (FoodEntry entry : list) {
+									hmap.put(entry.getName(), entry.getFloatValue());
+								}
+								//add to global table
+								foodTable.put(id, hmap);
+							}							
+							//propagate result
+							RESULT = list;
+						:};
+
+FoodList ::= FoodList:fl CM Food:f {: 
+							//add food to food list and propagate result
+							fl.add(f);
+							RESULT = fl;
+						:}
+		| Food:f {: 
+							//create food list with food in it
+							RESULT = new ArrayList<FoodEntry>();
+							RESULT.add(f);
+		 		:};
+
+Food ::= FoodName:fname DD REAL:kgprice EKG {: 
+							//create food entry and fill data
+							RESULT = new FoodEntry(fname, kgprice);
+			 			:};
+						 
+Recipes ::= Recipes:recipes Recipe:recipe {:
+							//append recipe string output and propagate result 
+							RESULT = recipes + recipe;
+			 			:}
+						| {: 
+							//initialize result string
+							RESULT = "";
+			 			:};
+
+Recipe ::= INT:number RecipeName:rname dd IngredList:list S {:
+							//set decimal format
+							DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+							otherSymbols.setDecimalSeparator('.');
+							DecimalFormat df = new DecimalFormat("0.00", otherSymbols);
+							RESULT = rname + "\n";
+							Float total = 0.0f;
+							//construct recipe output string
+							for (FoodEntry ingredient : list) {
+								Float ingrPrice = number * ingredient.getFloatValue();
+								RESULT += ingredient.getName() + " " + df.format(ingrPrice);
+								RESULT += " EURO\n";
+								total += ingrPrice;
+							}
+							//propagate result
+							RESULT += "TOT: " + df.format(total) + " EURO\n";
+						:};
+dd ::= DD | ;
+
+IngredList ::= IngredList:list CM  Ingredient:i {:
+							//add ingredient to list
+							list.add(i);
+							//propagate result
+							RESULT = list;
+						:}
+			| Ingredient:i {:
+							//create ingredient list with ingredient in it
+							RESULT = new ArrayList<FoodEntry>();
+							RESULT.add(i);
+						:};
+
+Ingredient ::= FCatName:fcat DOT FoodName:fname WEIGHT:w KG {:
+							//get ingredient value from global table
+							HashMap<String, Float> fcatTable = foodTable.get(fcat);
+							Float price = 0.0f;
+							if(fcatTable != null) price = fcatTable.get(fname);	
+							//compute ingredient price
+							if (price != null) {
+								price = price * w;
+							}
+							else price = 0.0f;
+							//propagate result
+							RESULT = new FoodEntry(fname, price);
+						:}
+			 | FCatName:fcat DOT FoodName:fname REAL:w KG {:
+							//get ingredient value from global table
+							HashMap<String, Float> fcatTable = foodTable.get(fcat);
+							Float price = 0.0f;
+							if(fcatTable != null) price = fcatTable.get(fname);	
+							//compute ingredient price
+							if (price != null) {
+								price = price * w;
+							}
+							else price = 0.0f;
+							//propagate result
+							RESULT = new FoodEntry(fname, price);
+						:};
+
+FoodName ::= QSTRING:q 	 {: RESULT = new String(q); :};
+FCatName ::= QSTRING:q 	 {:	RESULT = new String(q); :};
+RecipeName ::= QSTRING:q {:	RESULT = new String(q); :};
+

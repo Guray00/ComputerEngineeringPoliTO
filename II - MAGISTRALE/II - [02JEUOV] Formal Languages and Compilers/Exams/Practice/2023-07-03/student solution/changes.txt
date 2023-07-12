@@ -1,0 +1,5 @@
+List of changes between labinf test files and final files:
+- added missing line to scanner.jflex to handle HH:MM format in <token3>
+- fixed declaration of non terminal symbol "roomlist" (Hashmap -> HashMap) in parser.cup
+- added newline character to printed output between lines in parser.cup
+- added null check on type when accessing HashMap table on print instruction
