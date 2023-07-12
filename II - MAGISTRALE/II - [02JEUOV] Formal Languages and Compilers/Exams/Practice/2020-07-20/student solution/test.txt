@@ -1,0 +1,23 @@
+(++ Header section (second type of grammar for the header) ++)
+07:13:24:101; (++ <token2> ++)
+08:13:10:11001 ; (++ <token2> ++)
+aabbccabc#-a; (++ <token1> ++)
+10:13:26:1000; (++ <token2> ++)
+$$
+(++ Commands section ++)
+a = 2; (++ assigns 2 to var a ++)
+b = 2 + 3 * 2; (++ assigns 2+6=8 to var b ++)
+c = (a + 1) * 2; (++ assigns 3*2=6 to var c ++)
+compare 3+a with (++ 3+a=5 ++)
+3*a { (++ FALSE ++)
+print 3;
+print a+1;
+}
+1+ 2*2 { (++ TRUE ++)
+print 2; (++ print 2 ++)
+print 3; (++ print 3 ++)
+}
+b-3 { (++ TRUE ++)
+print a*2; (++ print 4 ++)
+}
+end;

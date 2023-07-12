@@ -1,0 +1,39 @@
+// Header section
+// <token1>
+$10111; // <token3>
+???**???45; // <token1>
+2015/12/25+2016/02/28; // <token2>
+####
+// Cars section
+"CAR_A" {
+"curve_1" = 10 m/s,
+"straight_1" = 50 m/s,
+"curve_2" = 20 m/s,
+"straight_2" = 60 m/s,
+"curve_3" = 15 m/s,
+"straight_3" = 80 m/s
+}
+"CAR_B" {
+"curve_1" = 5 m/s,
+"straight_1" = 80 m/s,
+"curve_2" = 20 m/s,
+"straight_2" = 75 m/s,
+"curve_3" = 10 m/s,
+"straight_3" = 80 m/s
+}
+######
+// Race section
+// between 10, 50 and 15 the min is 10 and the max is 50
+PRINT_MIN_MAX("CAR_A")("curve_1", "straight_1", "curve_3");
+"CAR_A" ->
+PART1 : "curve_1" 20 m | // 20/10=2 s
+// 400/50+40/20+540/60=8+2+9=19 s
+PART2 : "straight_1" 400 m, "curve_2" 40 m, "straight_2" 540 m |
+PART3 : "curve_3" 30 m, "straight_3" 640 m // 30/15+640/80=2+8=10 s
+;
+"CAR_B" ->
+PART1 : "curve_1" 20 m | // 20/5=4 s
+// 400/80+40/20+540/75=5+2+7.2=14.2 s
+PART2 : "straight_1" 400 m, "curve_2" 40 m, "straight_2" 540 m |
+PART3 : "curve_3" 30 m, "straight_3" 640 m // 30/10+640/80=3+8=11 s
+;

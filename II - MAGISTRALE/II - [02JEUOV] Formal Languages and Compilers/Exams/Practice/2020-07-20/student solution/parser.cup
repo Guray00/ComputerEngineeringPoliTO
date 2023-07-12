@@ -1,0 +1,72 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+init with{:
+    table = new HashMap<String, HashMap<String, Double>>();
+:};
+
+parser code     {:
+    public HashMap<String, HashMap<String, Double>> table;
+
+    public void report_error(String message, Object info){
+        StringBuffer m = new StringBuffer(message);
+        if (info instanceof Symbol){
+            if(((Symbol)info).left != 1 && ((Symbol)info).right != 1){
+                if(((Symbol)info).left != -1 && ((Symbol)info).right != -1){
+                    int line = (((Symbol)info).left) + 1;
+                    int column = (((Symbol)info).right) + 1;
+                    m.append("(line" + line + "column " + column + ")");
+                }
+            }
+            System.err.println(m);
+        }
+    }
+
+     // Return semantic value of symbol in position (position)
+    public Object stack(int position) {
+        return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+
+:}
+
+
+// terminal String;
+// terminal Integer;
+// terminal Double;
+
+terminal TOK1, TOK2,UINT,S,BO,PRINT_WD,BC,DIVIDER,ID,CM,COL,EQ,RO,RC,PLUS,MINUS,STAR,DIV,COMPARE_WD,WITH_WD,END_WD;
+non terminal prog,prog_test,compare,commands_sec,comp_list,comp,expr,command,assignment,header,header1,header2,tok1_list,tok2_list,nt1,print_list;
+// non terminal HashMap;
+// non terminal Integer[];
+// non terminal Double;
+
+precedence left PLUS,MINUS;
+precedence left STAR,DIV;
+
+start with prog;
+prog ::= header DIVIDER commands_sec | header DIVIDER;
+prog_test ::= expr S;
+header ::= header1 | header2;
+header1 ::= tok1_list tok2_list;
+tok1_list ::= tok1_list TOK1 S TOK1 S| TOK1 S TOK1 S TOK1 S;
+tok2_list ::= TOK2 S TOK2 S TOK2 S 
+        | TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S TOK2 S;
+header2 ::= TOK2 S nt1 TOK2 S nt1 TOK2 S nt1;
+nt1 ::= nt1 TOK1 S | ;
+
+commands_sec ::= commands_sec command | command;
+command ::= assignment | compare;
+
+assignment ::= ID EQ expr S;
+expr ::= expr PLUS expr
+    | expr MINUS expr
+    | expr STAR expr
+    | expr DIV expr
+    | RO expr RC 
+    | UINT
+    | ID
+;
+compare ::= COMPARE_WD expr WITH_WD comp_list END_WD S;
+comp_list ::= comp_list expr BO print_list BC | expr BO print_list BC;
+print_list ::= print_list PRINT_WD  expr S | PRINT_WD expr S;

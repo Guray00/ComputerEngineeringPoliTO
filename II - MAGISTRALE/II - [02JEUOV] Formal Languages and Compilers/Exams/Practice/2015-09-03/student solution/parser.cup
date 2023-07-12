@@ -1,0 +1,132 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+init with{:
+    table = new HashMap<String, HashMap<String, Integer>>();
+:};
+
+parser code     {:
+    public HashMap<String, HashMap<String, Integer>> table;
+
+    public void report_error(String message, Object info){
+        StringBuffer m = new StringBuffer(message);
+        if (info instanceof Symbol){
+            if(((Symbol)info).left != 1 && ((Symbol)info).right != 1){
+                if(((Symbol)info).left != -1 && ((Symbol)info).right != -1){
+                    int line = (((Symbol)info).left) + 1;
+                    int column = (((Symbol)info).right) + 1;
+                    m.append("(line" + line + "column " + column + ")");
+                }
+            }
+            System.err.println(m);
+        }
+    }
+
+     // Return semantic value of symbol in position (position)
+    public Object stack(int position) {
+        return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+
+:}
+
+
+terminal String QSTRING;
+terminal Integer UINT;
+// terminal Double;
+terminal TOK1,TOK2,TOK3,S,DIVIDER,BO,BC,EQ,CM,MEASURE,ARROW,RC,RO,PRINT_WD,PIPE,PART_WD,COL,M_CHAR;
+non terminal prog,header,nt1,car_section,car,race_section,print_min_max,print_func;
+non terminal HashMap<String,Integer> current;
+non terminal HashMap<String,Integer> speeds;
+non terminal Integer[] section_names;
+non terminal Integer current_speed,drive_stats,part,parts;
+non terminal Object[] performance,performances;
+// non terminal Double;
+
+start with prog;
+prog ::= header DIVIDER car_section DIVIDER race_section;
+header ::= nt1 TOK2 S nt1 TOK3 S nt1 | nt1 TOK3 S nt1 TOK2 S nt1;
+nt1 ::= nt1 TOK1 S |  ;
+
+car_section ::= car_section car car | car car;
+car ::= QSTRING:x BO speeds:tab BC {:parser.table.put(x,tab);:};
+speeds ::= QSTRING:x EQ UINT:y MEASURE CM speeds:tab {:
+        tab.put(x,y);
+        RESULT = tab;
+        :}
+        | QSTRING:x EQ UINT:y MEASURE {:
+        HashMap<String,Integer> tab = new HashMap<String,Integer>();
+        tab.put(x,y);
+        RESULT = tab;
+        :}
+;
+
+
+
+race_section ::= print_min_max performances;
+print_min_max ::= print_min_max print_func | ;
+print_func ::= PRINT_WD RO QSTRING:x RC RO section_names:y RC S {:
+    System.out.println(" " + x + " min > " + y[0] + "; max > " + y[1]);
+    :};
+section_names ::= section_names:y CM QSTRING:x {:
+    Object carname = parser.stack(-5);
+    HashMap<String,Integer> current = parser.table.get(carname);
+    Integer current_speed = current.get(x);
+    if(current_speed < y[0]){
+        y[0] = current_speed;
+    }
+    if(current_speed > y[1]){
+        y[1] = current_speed;
+    }
+    RESULT = y;
+    :}
+        | QSTRING:x {:
+            Integer[] min_max = new Integer[2];
+            min_max[0] = 10000;
+            min_max[1] = 0;
+            Object carname = parser.stack(-3);
+            HashMap<String,Integer> current = parser.table.get(carname);
+            Integer current_speed = current.get(x);
+            if(current_speed < min_max[0]){
+                min_max[0] = current_speed;
+            }
+            if(current_speed > min_max[1]){
+                min_max[1] = current_speed;
+            }
+            RESULT = min_max;
+        :}
+;
+
+performances ::= performances performance | performance:x 
+;
+performance ::= QSTRING:x ARROW parts:y S {:
+    System.out.println(" " + x + " TOTAL : " + y);
+    Object[] resultval = new Object[2];
+    resultval[0] = x;
+    resultval[1] = y;
+    RESULT = resultval;
+:};
+parts ::= parts:y PIPE part:x {:RESULT = y + x;:}
+    | part:x {:RESULT = x;:}
+;
+part ::= PART_WD UINT:n COL drive_stats:x {:System.out.println("PART" + n + ": " + x + " s");RESULT = x;:};
+drive_stats ::= QSTRING:pn UINT:d M_CHAR CM drive_stats {:
+    Object carname = parser.stack(-11);
+    if(carname != null){
+        HashMap<String,Integer> speed_map = parser.table.get(carname);
+        Integer speed = speed_map.get(pn);
+        System.out.println(" " + d + " / " + speed);
+        RESULT = d / speed;
+    }
+:}
+| QSTRING:pn UINT:d M_CHAR
+{:
+    Object carname = parser.stack(-7); 
+    if(carname != null){
+        HashMap<String,Integer> speed_map = parser.table.get(carname);
+        Integer speed = speed_map.get(pn);
+        System.out.println(" " + d + " / " + speed);
+        RESULT = d / speed;
+    }
+:}
+;

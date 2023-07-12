@@ -1,0 +1,65 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+init with{:
+    table = new HashMap<String, HashMap<String, Double>>();
+:};
+
+parser code     {:
+    public HashMap<String, HashMap<String, Double>> table;
+
+    public void report_error(String message, Object info){
+        StringBuffer m = new StringBuffer(message);
+        if (info instanceof Symbol){
+            if(((Symbol)info).left != 1 && ((Symbol)info).right != 1){
+                if(((Symbol)info).left != -1 && ((Symbol)info).right != -1){
+                    int line = (((Symbol)info).left) + 1;
+                    int column = (((Symbol)info).right) + 1;
+                    m.append("(line" + line + "column " + column + ")");
+                }
+            }
+            System.err.println(m);
+        }
+    }
+
+     // Return semantic value of symbol in position (position)
+    public Object stack(int position) {
+        return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+
+:}
+
+
+// terminal String;
+terminal Integer UINT;
+// terminal Double;
+terminal TOK1, TOK2, S,DIVIDER,REAL,ID,COL,USERCODE,USERNUMBER,DOT,CM,AUCTION_WD,QSTRING,MIN_WD,ARR_WD,EURO_WD,NUM_BETWEEN;
+non terminal prog,prog_test,header,divider,currencies,auctions,auction,nt1,currency,user_list,user_code,user_number_list,advances,advance,nt2;
+// non terminal HashMap;
+// non terminal Integer[];
+// non terminal Double;
+
+start with prog_test;
+prog_test ::= header
+;
+prog ::= header DIVIDER currencies DIVIDER
+    | header DIVIDER currencies DIVIDER auctions
+;
+header ::=  nt1 TOK1  nt2  nt1 nt2  nt1
+    |  nt1  nt2  nt1 TOK1 S nt2  nt1
+    |  nt1 nt2  nt1 nt2 TOK1 S  nt1
+;
+nt2 ::= TOK2 S | NUM_BETWEEN S;
+nt1 ::= nt1 TOK1 S | ;
+
+currencies ::= currencies currency | currency currency currency;
+currency ::= REAL ID ID COL user_list S
+        | REAL EURO_WD EURO_WD COL user_list S
+        | REAL EURO_WD ID COL user_list S
+;
+user_list ::=  USERCODE REAL CM user_list | USERCODE REAL;
+
+auctions ::= auctions auction auction | auction auction;
+auction ::= AUCTION_WD UINT COL QSTRING COL UINT MIN_WD ARR_WD advances S;
+advances ::= USERCODE COL UINT COL REAL EURO_WD CM advances | USERCODE COL UINT COL REAL EURO_WD;
