@@ -24,6 +24,7 @@ I ringraziamenti sono in ordine alfabetico, molto materiale è di anni precedent
 
 **Collaboratori Materiale**<br>
 - Bottisio Alessandro<br>
+- Leone Andrea<br>
 - Novarese Daniele<br>
 
 <br>

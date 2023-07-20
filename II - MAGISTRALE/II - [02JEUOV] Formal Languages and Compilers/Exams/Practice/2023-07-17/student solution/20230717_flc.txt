@@ -1,0 +1,16 @@
+// Header section
+10.0.0.1-01/03/2024;     {{tok2}}
+1234-123456+9876;        {{tok3}}
+27b*abCdefg-;            {{tok1}}
+130.192.78.1-29/02/2024; {{tok2}}
+***
+// Dresses section
+"shirts"   - 11 "summer" 35.00 euro, 12 "winter" 40.00 euro, 13 "mid-season" 41.00 euro;
+"trousers" - 14 "summer" 30.00 euro,
+            15 "winter" 35.00 euro;
+"shoes"    - 16 "man" 50.00 euro, 17 "woman" 90.00 euro;
+***
+// Shopping section
+"shirts" 80 % - "summer" 1, "winter" 2;
+"shoes"  90 % - "woman" 2;
+

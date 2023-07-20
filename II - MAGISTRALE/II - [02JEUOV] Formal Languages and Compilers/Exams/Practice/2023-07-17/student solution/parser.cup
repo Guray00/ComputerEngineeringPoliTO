@@ -1,0 +1,253 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Vector;
+import java.util.Iterator;
+
+// common mistake:
+// error "colon colon equals" means you forgot some semicolon at the end of a rule
+
+
+init with {:
+    // external key :dressname
+    // internal key: prodname
+    symbol_table = new HashMap<String, HashMap<String, Double>>();
+
+    /* new HashMap made of String and Hashmap of String and Integer
+    symbol_table = new HashMap<String, Integer>();         // REMEMBER TO DECLARE IT ALSO IN THE PARSER CODE UNDER (line 21)
+    
+    /* v1 = new Integer(0); GLOBAL INTEGERS (line 22)
+    v2 = new Integer(0); */
+:};
+
+parser code {:
+    public HashMap symbol_table;
+
+   /* public HashMap <String, Integer> table;
+    public int v1;
+    public int v2; */
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {                
+        m.append(" in line " + (current_symbol.left+1));   
+	  m.append(", column " + (current_symbol.right+1));
+      }
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+//USE IT FOR WHEN YOU HAVE TO KEEP TOGETHER VALUES OF AN OBJECT, LIKE THE ATTRIBUTES OF EXAM 1
+action code{:
+    public class NameClass{
+      private Integer att1;
+      private String att2;
+      NameClass(Integer a, String b){
+        this.att1 = a;
+        this.att2 = b;
+      }
+      Integer getAtt1(){
+        return this.att1;
+      }
+    }
+:}
+
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal Double CONST;
+/*
+terminal Character RO, RC, SO, SC, BO, BC; 
+terminal EQ, PLUS, MINUS, STAR, DIV, EXP, TILDE;
+terminal MIN, MAJ, MIN_EQ, MAJ_EQ;
+terminal AND, OR, NOT;
+terminal S, CM, DOT;
+terminal UMINUS;
+*/
+terminal S, TOK1, MINUS, PERC, EUROWORD, CM, TOK2, TOK3, SEP, QSTRING;
+terminal Integer INT;
+terminal Double REAL;
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+
+non terminal Object shopping_section, purchasing, dresses_section, prod_list, dresses,  prog, header, anytok13, odd_tok1, tok2_header1, three_token2, nine_token2, ten_token2, header1, header2;
+non terminal Object[] list_purch_prod;
+/*
+non terminal Object[] obj_vec;
+non terminal Object expr_list, expr, vect_expr_, scalar_expr_, scalar_assign;
+non terminal Double scalar_expr, scalar;
+non terminal Double[] vect_expr, vector;
+non terminal HashMap hash;
+*/
+
+//////////////////////////////////
+/////////// PRECEDENCE ///////////
+//////////////////////////////////
+
+/*
+precedence left MINUS, PLUS;
+precedence left DIV, PROD, PT;
+precedence left EXP;
+
+precedence left UMINUS;
+*/
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+start with prog;
+
+prog ::= header SEP dresses_section SEP shopping_section;
+
+//works
+header ::= header1 |header2 ;
+
+header1 ::= odd_tok1 tok2_header1;
+
+odd_tok1 ::= TOK1 S TOK1 S TOK1 S | odd_tok1 TOK1 S TOK1 S;
+tok2_header1 ::= three_token2 |nine_token2 |ten_token2;
+three_token2 ::= TOK2 S TOK2 S TOK2 S ;
+nine_token2 ::= three_token2 three_token2 three_token2;
+ten_token2 ::= nine_token2 TOK2 S;
+
+header2 ::= TOK2 S anytok13 | TOK2 S anytok13 TOK2 S anytok13;
+anytok13 ::= |anytok13 TOK1 S | anytok13 TOK3 S;
+
+// works
+dresses_section ::= dresses dresses dresses | dresses_section dresses dresses;
+dresses ::= QSTRING:dress_name MINUS prod_list:inner S
+             {:
+             HashMap<String, Double> inner_hm = (HashMap<String, Double>) inner;
+             parser.symbol_table.put(((String) dress_name), inner_hm);
+             :};
+prod_list ::=  INT:prod_id QSTRING:prodname REAL:prod_cost EUROWORD 
+            {: 
+            /* create inner_hm bc it's first prod */
+            HashMap<String, Double> inner_hm =new HashMap<String, Double>();
+            inner_hm.put(((String) prodname), (((Double) prod_cost)));
+            RESULT = inner_hm;
+            :}
+            | prod_list:inner CM INT:prod_id QSTRING:prodname REAL:prod_cost EUROWORD
+             {:
+             /*Casting hashmap */
+             HashMap<String, Double> inner_hm = (HashMap<String, Double>) inner;
+             inner_hm.put(((String) prodname), (((Double) prod_cost)));
+             RESULT = inner_hm;
+             :};
+
+// grammar works
+shopping_section ::= purchasing | shopping_section purchasing;
+purchasing ::= QSTRING:dress_name INT:percent PERC MINUS list_purch_prod:obj_res S {:
+            /*    Double total = ((Double) obj_res[0]);
+                Integer nprod = ((Integer) obj_res[1]); */
+                Object[] final_res = new Object[2];
+                final_res = (Object[]) obj_res;
+                System.out.println("TOTAL : " + final_res[0] + " euro N_PROD : " + final_res[1]);
+                :};
+list_purch_prod ::= QSTRING:prod_name INT:quantity 
+                    {: 
+                    String dress_x = (String) parser.stack((-5));
+                    String prod_x = (String) prod_name;
+                    /* percent is at parser.stack(-4)); */
+                    Integer percent_x = (Integer) parser.stack((-4));
+                    /*i retrieve the price */
+                    Integer quantity_x = (Integer) quantity;
+                    Double price_x = (Double) (((HashMap<String, Double>) parser.symbol_table.get(dress_x)).get(prod_x));
+                    System.out.println(" " + dress_x); 
+                    Double result = price_x * quantity_x * percent_x / 100;
+                    System.out.println(" " + prod_x + " " + result + " euro");
+                    Object[] res_obj = new Object[2];
+                    res_obj[0] = result;
+                    res_obj[1] = quantity;
+              //      System.out.println("Obj[0] :" + res_obj[0] + " obj[1] " + res_obj[1]);
+                    RESULT = res_obj; 
+                /*     RESULT = result; */
+                    :} | list_purch_prod:vect_obj CM QSTRING:prod_name INT:quantity {:
+                    String dress_x = (String) parser.stack((-7));
+                    String prod_x = (String) prod_name;
+                    /* percent is at parser.stack(-4)); */
+                    Integer percent_x = (Integer) parser.stack((-6));
+                    /*i retrieve the price */
+                    Integer quantity_x = (Integer) quantity;
+              
+                    Double price_x = (Double) (((HashMap<String, Double>) parser.symbol_table.get(dress_x)).get(prod_x));
+                    Double result = price_x * quantity_x * percent_x / 100;
+                    System.out.println(" " + prod_x + " " + result + " euro");
+                    Object[] res_obj = new Object[2];
+                    res_obj = (Object[]) vect_obj;
+                    Double curr_casted =((Double) res_obj[0]);
+                    Integer nprod_curr = ((Integer) res_obj[1]);
+                    res_obj[0] = ((Double) curr_casted) + result;
+                    res_obj[1] = nprod_curr + quantity;
+               //     System.out.println("Obj[0] :" + res_obj[0] + " obj[1] " + res_obj[1]);
+                    RESULT = res_obj; 
+              /*      RESULT = ((Double) curr) + result;*/
+
+                    :};
+
+
+/* ex header : <tok1> and <tok2> can appear in any order and number (even 0
+times), instead, <tok3> can appear only 0, 1, or 2 times. 
+
+header ::= header1 
+          | header1 TOK3 SC header1 
+          | header1 TOK3 SC header1 TOK3 SC header1
+;
+
+header1 ::= header1 TOK1 SC | header1 TOK2 SC | ; */
+
+/* at least 5 commands and in even number (5, 7, 9..)
+
+execution_section ::= command command command command command | execution_section command command; 
+
+command ::= ass | if; */ 
+
+/* how to declare new object into java code to return it:
+Object obj[] = new Object[size];
+also declare the non terminal as "non terminal Object[]" */
+ 
+/* casting: when getting an inherited attribute x i have to cast it 
+like (String) x and if i want to use it i have to do like ((String) x).equals("...") */
+
+/* nt0 nt1 
+
+/* this way i pass list_comp val (the one on the left) to nt0 or nt1: this way i always know that the value of the 
+result is one step before comp and in comp code i can retrieve it by doing always (in this case) stack(-5)
+
+list_comp ::= nt0 comp | list_comp nt1 comp;
+
+nt0 ::= {: RESULT = (Boolean)parser.stack(0); :};
+
+nt1 ::= {: RESULT = (Boolean)parser.stack(-1); :};
+
+comp ::= OR_WD bool_exp:exp DO_WD print:pr DONE_WD {:
+          Boolean a = (Boolean)parser.stack(-5);
+          if(a || (Boolean)exp){
+            System.out.println(pr);
+          }
+        :}
+*/ 
+
+/*
+expr ::= VAR 
+  | expr PLUS expr 
+  | expr MINUS expr
+  | expr STAR expr
+  | expr DIV expr 
+  | RBO expr RBC
+  | MINUS expr %prec UMINUS
+; */
