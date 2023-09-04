@@ -74,8 +74,6 @@ Attesa attiva. Utile per fare cose rapide. vengono utilizzati dai wait channel.
 
 ### lock
 
-Non ha attesa attiva, è leggermente più lento. Vengono utilizzate dalle conditional variables.
+Non è presente attesa attiva, è leggermente più lento. Vengono utilizzate dalle conditional variables.
 
-Il semaforo non protegge da un errore perchè non c'è controllo su chi rilascia o meno, è necessario verificare che chi rilascia sia esattamente chi lo ha richiesto.
-
-
+Il semaforo non protegge da un errore perché non c'è controllo su chi rilascia o meno, è necessario verificare che chi rilascia sia esattamente chi lo ha richiesto.
