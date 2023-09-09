@@ -1,9 +1,12 @@
 # Materiale Computer Engineering @ PoliTO 
 
+<!--
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/check-it-out.svg)](https://forthebadge.com)
 <br><br>
+-->
+
 Materiale didattico per gli studenti del corso di Computer Engineering presso il Politecnico di Torino (classe [L-8](https://didattica.polito.it/pls/portal30/sviluppo.offerta_formativa_2019.vis?p_sdu=37&p_cds=3) ed [LM-32](https://didattica.polito.it/pls/portal30/sviluppo.offerta_formativa_2019.vis?p_a_acc=2023&p_sdu=37&p_cds=18)). Ciò che troverete all'interno di questa raccolta è realizzato direttamente dagli studenti che hanno frequentato, o che tutt'ora frequentano, il corso; per tale motivo non è in alcun modo da ritenersi ufficiale e quanto fornito non è controllato da alcun docente, se non dagli studenti stessi che segnalano eventuali problemi o apportano loro stessi modifiche e miglioramenti. Troverete anche materiale fornito dai docenti del corso, per esempio dispense e prove d'esame passate.
 <p align="center"><b>Quanto fornito è senza alcun scopo di lucro e vuole intendersi unicamente come aiuto per gli studenti</b></p> 
 
