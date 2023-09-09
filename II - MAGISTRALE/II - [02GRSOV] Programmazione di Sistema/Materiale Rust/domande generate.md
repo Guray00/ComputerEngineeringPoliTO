@@ -266,11 +266,46 @@ Quando usare &str:
 
 In sintesi String per stringhe owned e modificabili, &str per slicing efficiente di stringhe esistenti.
 
-</details> 
+</details>
+
+## Domanda 10
+
+Spiegare come funziona e cosa è il meccanismo RAII.
+
+<details>
+<summary>Soluzione</summary>
+
+**RAII** (Resource Acquisition Is Initialization) è un importante meccanismo in Rust che permette di gestire le risorse in modo automatico e sicuro.
+
+Funziona seguendo questi principi:
+
+- Le risorse vengono associate ad un tipo che ne gestisce il ciclo di vita.
+- L'inizializzazione di una variabile di quel tipo equivale ad acquisire la risorsa.
+- Quando la variabile esce di scope, il suo distruttore rilascia automaticamente la risorsa.
+
+In Rust questo si realizza tramite il concetto di ownership:
+
+- Ogni valore ha un proprietario univoco.
+- Quando il proprietario esce di scope, viene invocato il metodo Drop che rilascia la risorsa.
+
+Ad esempio, con Box l'allocazione heap è gestita tramite RAII:
+
+```rust
+{
+  let x = Box::new(5); // alloca sullo heap 
+  // usa x
+} // x esce di scope, viene invocato Drop che rilascia la memoria
+```
+
+Quindi **RAII** incapsula l'acquisizione e rilascio delle risorse legandoli all'inizializzazione e distruzione degli oggetti. Questo rende la gestione delle risorse semplice, sicura e automatica in Rust.
+
+</details>
+
+
 
 <!-- 
 <details>
 <summary>Soluzione</summary>
 
-</details> 
+</details>
 -->
