@@ -1,5 +1,5 @@
 
-# Architetture dei sistemi di elaborazione
+# Programmazione di Sistema
 
 - **Professori**: Malnati, Cabodi, Azimi, Savino 
 - **Codice**: 02GRSOV
