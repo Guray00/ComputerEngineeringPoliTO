@@ -1,0 +1,197 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.lang.Double;
+
+
+init with {:
+    symbol_table = new HashMap<String, HashMap>();
+:};
+
+parser code {:
+    public HashMap<String, HashMap> symbol_table;
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {                
+        m.append(" in line " + (current_symbol.left+1));   
+	    m.append(", column " + (current_symbol.right+1));
+      }
+
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	  System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+action code{:
+    public class Prod{
+        public Double cost;
+        public String name;
+        public Integer id;
+      
+        public Prod(Integer i, String n, Double c){
+            id = i;
+            name = n;
+            cost = c;
+        }
+    }
+
+    public class PurchProd {
+        public Integer quantity;
+        public String name;
+
+        public PurchProd(String n, Integer q){
+            name = n;
+            quantity = q;
+        }
+    }
+:}
+
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal SEP, TOK1, TOK2, TOK3;
+
+// TYPES 
+terminal String QUOTEDS;
+// terminal String VAR;
+terminal Double REAL;
+terminal Integer INT;
+
+// SYMBOLS
+terminal PV;
+terminal COMMA;
+terminal PERC;
+terminal MINUS;
+terminal EURO;
+
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+non terminal Object prog;
+
+
+// header ==========================================================================
+non terminal header;
+non terminal tok1, tok2, tok3, tok13, h1, h2;
+
+// second section ==================================================================
+non terminal second_section;
+non terminal dress_list;
+non terminal dress;
+non terminal String dress_name;
+non terminal HashMap<String, Prod> prod_list;
+non terminal Prod prod;
+non terminal Integer prod_id;
+non terminal String prod_name;
+non terminal Double prod_cost;
+
+// third section ===================================================================
+non terminal third_section;
+non terminal purchase;
+non terminal purchase_list;
+non terminal ArrayList<PurchProd> purch_prod_list;
+non terminal PurchProd purch_prod;
+non terminal Integer percent;
+non terminal Integer quantity;
+
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+// STARTING POINT ==================================================================
+start with prog;
+
+prog ::= header SEP second_section SEP third_section;
+
+// header ==========================================================================
+tok1 ::= TOK1 TOK1 TOK1 | tok1 TOK1 TOK1;
+tok2 ::= TOK2 TOK2 TOK2;
+tok13 ::= | tok13 TOK1 | tok13 TOK3;
+
+h1 ::= tok1 tok2 tok2 tok2 | tok1 tok2 tok2 tok2 TOK2;
+h2 ::= TOK2 tok13 | TOK2 tok13 TOK2 tok13;
+
+header ::= h1 | h2;
+
+
+// second section ==================================================================
+second_section ::= dress_list;
+
+dress_list ::= dress dress dress | dress_list dress dress;
+
+dress ::= dress_name:name MINUS prod_list:list PV{:
+    symbol_table.put(name, list);
+:};
+
+prod_list ::= prod:p {:
+    RESULT = new HashMap<String, Prod>();
+    RESULT.put(p.name, p);
+:} | prod_list:list COMMA prod:p {:
+    list.put(p.name, p);
+    RESULT = list;
+:};
+
+prod ::= prod_id:id prod_name:name prod_cost:cost EURO{:
+    Prod tmp = new Prod(id, name, cost);
+    RESULT = tmp;
+:};
+
+prod_id     ::= INT:x {: RESULT = x; :};
+prod_name   ::= QUOTEDS:x {: RESULT = x; :};
+dress_name  ::= QUOTEDS:x {: RESULT = x; :};
+prod_cost   ::= REAL:x {: RESULT = x; :};
+
+
+
+
+// third section ===================================================================
+third_section ::= purchase_list;
+
+purchase_list ::= purchase | purchase_list purchase;
+
+purchase ::= dress_name:name percent:p PERC MINUS purch_prod_list:list PV {:
+    System.out.println(name);
+
+    Double sum = 0.0;
+    Integer q = 0;
+
+    for (PurchProd x : list){
+        Prod a = ((HashMap<String, Prod>) symbol_table.get(name)).get(x.name);
+        Double cost = a.cost;
+        Double price = x.quantity * cost * p / 100;
+        sum += price;
+        q += x.quantity;
+
+        System.out.println(x.name + " " + String.format(Locale.US, "%.2f", price) + " euro");
+    }
+
+    System.out.println("TOTAL: "+ String.format(Locale.US, "%.2f", sum) + " euro N_PROD: " + q);
+:};
+
+purch_prod_list ::= purch_prod:p {:
+    RESULT = new ArrayList<PurchProd>();
+    RESULT.add(p);
+:}| purch_prod_list:list COMMA purch_prod:p {:
+    list.add(p);
+    RESULT = list;
+:};
+
+purch_prod ::= prod_name:name quantity:quantity {:
+    RESULT = new PurchProd(name, quantity);
+:};
+
+percent ::= INT:x {:RESULT = x; :};
+quantity ::= INT:x {:RESULT = x; :};

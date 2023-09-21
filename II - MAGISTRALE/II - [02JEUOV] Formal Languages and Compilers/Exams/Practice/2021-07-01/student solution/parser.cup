@@ -1,0 +1,238 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.util.Iterator;
+
+
+init with {:
+    symbol_table = new HashMap<String, HashMap>();
+:};
+
+parser code {:
+    public HashMap<String,HashMap> symbol_table;
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {                
+        m.append(" in line " + (current_symbol.left+1));   
+	    m.append(", column " + (current_symbol.right+1));
+      }
+
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	  System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+action code{:
+    public class Material{
+     public String name;
+     public Double price; 
+
+      Material(String name, Double price){
+          this.name =name;
+          this.price = price;
+      }
+    }
+    
+    public class Element {
+        public String name;
+        public ArrayList<Component> components;
+        
+        public Element(String n, ArrayList<Component> c){
+            name = n;
+            components = c;
+        }
+    }
+    
+    public class Component {
+        public String name;
+        public Integer quantity;
+        
+        public Component(String m, Integer q){
+            this.name = m;
+            this.quantity = q;
+        }
+    }
+:}
+
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal SEP, TOK1, TOK2;
+
+terminal String QUOTEDS;
+terminal Double REAL;
+
+terminal BO, BC, COMMA, PV; 
+
+
+// warehouse
+terminal EUROKG;
+
+// products
+terminal EURO;
+terminal DD;
+terminal KG;
+terminal Integer INT;
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+
+non terminal Object prog;
+
+// header ===================================
+non terminal header, warehouse_;
+non terminal tok1, tok2, tok22, tok11;
+
+// warehouse ================================
+non terminal warehouse;
+non terminal material_type;
+non terminal HashMap<String, Material> material_list;
+non terminal String material_type_name;
+non terminal Material material;
+non terminal String material_name;
+non terminal Double unit_price;
+
+// products =================================
+non terminal products;
+non terminal product;
+non terminal Double tax;
+non terminal ArrayList<Element> element_list;
+non terminal Element element;
+non terminal String product_name;
+non terminal Integer quantity;
+non terminal ArrayList<Component> component_list;
+non terminal Component component;
+
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+start with prog;
+
+prog ::= header SEP warehouse_ SEP products
+;
+
+// header
+tok1 ::= TOK1 TOK1 TOK1 TOK1 | tok1 TOK1 TOK1;
+tok2 ::= TOK2 TOK2 TOK2;
+
+tok11 ::= | tok11 TOK1;
+tok22 ::= TOK2 tok11 TOK2 tok11 | TOK2 tok11 TOK2 tok11 TOK2 tok11;
+
+header ::= tok1 tok2
+    | tok1 tok2 tok2 tok2
+    | tok1 tok2 tok2 tok2 tok2
+    | tok22 
+;
+
+// warehouse
+
+warehouse_ ::= warehouse {:
+    System.out.println("---");
+:};
+
+
+
+warehouse ::= material_type material_type 
+    | warehouse material_type material_type material_list
+;
+
+material_type ::= BO material_list:list BC material_type_name:name PV {:
+    symbol_table.put(name, list);
+    
+    Material lower = null;
+    Material upper = null;
+    
+    ArrayList<Material> list2 = new ArrayList<Material>(list.values());
+    for (Material m : list2){
+        if (lower == null || lower.price > m.price){
+            lower = m;
+        }
+
+        if (upper == null || upper.price < m.price){
+            upper = m;
+        }
+    }
+
+    System.out.println(name + ": less: " + lower.name + ", more: "+ upper.name);
+:};
+
+material_list ::= material:m {: RESULT = new HashMap<String, Material>(); RESULT.put(m.name, m); :}
+    | material_list:list COMMA material:m {:
+        list.put(m.name, m);
+        RESULT = list;
+    :}
+;
+
+material ::= material_name:name unit_price:price EUROKG {:
+    Material tmp = new Material(name, price);
+    RESULT = tmp;
+:};
+
+material_type_name ::= QUOTEDS:str {: RESULT = str; :};
+material_name ::= QUOTEDS:str {: RESULT = str; :};
+unit_price ::= REAL:num {: RESULT = num; :};
+
+
+// products ========================================================
+products ::= | products product;
+
+product ::= tax:tax EURO product_name:name DD element_list:list PV {:
+    System.out.println(name);
+    
+    for (Element e : list){
+
+        // scorro i material type
+        String type = e.name;
+
+        for (Component c : e.components){
+            Material tmp = (Material) ( (HashMap<String, Material>) symbol_table.get(type)).get(c.name);
+            
+            Double price = (tmp.price * c.quantity) + tax;
+            System.out.println(tmp.name + " " + String.format(Locale.US, "%.2f", price) + " euro");
+        }
+        
+    }
+:};
+
+element_list ::= element:e {:
+        RESULT = new ArrayList<Element>();
+        RESULT.add(e);
+    :}
+    | element_list:list COMMA element:e {:
+        list.add(e);
+        RESULT = list;
+    :}
+;
+
+element ::= material_type_name:name BO component_list:list BC {:
+    Element tmp = new Element(name, list);
+    RESULT = tmp;
+:};
+
+component_list ::= component:c {: RESULT = new ArrayList<Component>(); RESULT.add(c);:}
+    | component_list:list COMMA component:c {:
+        list.add(c);
+        RESULT = list;
+    :};
+
+component ::= material_name:name quantity:quantity KG {:
+    RESULT = new Component(name, quantity);
+:};
+
+product_name ::= QUOTEDS:str {: RESULT = str; :};
+quantity ::= INT:num {: RESULT = num; :};
+tax ::= REAL:num {:RESULT = num;:};

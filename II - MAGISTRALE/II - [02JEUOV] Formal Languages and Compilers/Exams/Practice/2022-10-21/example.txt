@@ -1,0 +1,20 @@
+tk3 ; {++ tk3 ++}
+name1.surname1@skenz.it/name2.surname2@abc.net; {++ tk2 ++}
+?ABCFEF-36xxyyxxyy ; {++ tk1 ++}
+tk3; {++ tk3 ++}
+
+$$$ {++ division between header and command sections ++}
+x1 = T;
+x2 = NOT T AND NOT x1 ; {++ F AND F = F ++}
+{++ fz_and(T, T, T, F) OR F = F OR F = F ++}
+x3 = fz_and(T, T, fz_and(T, x1), F ) OR F;
+CMP T AND F {++ T AND F = F ++}
+WITH F OR F [ {++ executed ++}
+print("one");
+]
+WITH x1 [ {++ not executed ++}
+print("two");
+]
+WITH NOT x1 [ {++ executed ++}
+print("three");
+]

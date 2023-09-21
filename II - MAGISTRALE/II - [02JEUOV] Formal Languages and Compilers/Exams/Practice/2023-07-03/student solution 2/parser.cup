@@ -1,0 +1,212 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.util.Iterator;
+
+
+init with {:
+    symbol_table = new HashMap();
+:};
+
+parser code {:
+    public HashMap symbol_table;
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {                
+        m.append(" in line " + (current_symbol.left+1));   
+	    m.append(", column " + (current_symbol.right+1));
+      }
+
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	  System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+action code{:
+    public class House{
+      public String type;
+      public ArrayList<Room> rooms;
+      
+      public House(String t, ArrayList<Room> r){
+          type = t;
+          rooms = r;
+      }
+    }
+    
+
+    public class Room {
+        public String name;
+        public Integer size;
+        
+        public Room(String n, Integer s){
+            name = n;
+            size = s;
+        }
+    }
+:}
+
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal SEP, TOK1, TOK2, TOK3;
+
+terminal END, STARTER, HOUSE;
+terminal IF, FI, THEN, PRINT;
+
+// types
+terminal String QUOTEDS;
+terminal Integer INT;
+terminal Boolean TRUE, FALSE;
+
+// symbols
+terminal PV;
+terminal COMMA;
+terminal DOT;
+terminal EQEQ;
+
+// brackets
+terminal RO, RC; // ()
+terminal AND, OR, NOT;
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+
+non terminal Object prog;
+
+non terminal header;
+non terminal tok3;
+
+// house =================
+non terminal house_section;
+non terminal house;
+non terminal String type; 
+non terminal HashMap<String, Room> room_list;
+non terminal Room room;
+non terminal String room_name;
+non terminal Integer size;
+
+// preferences =============
+non terminal preferences;
+non terminal if_commands;
+non terminal iff;
+non terminal Boolean bool_val;
+non terminal Boolean bool_expr;
+non terminal ArrayList<String> print_list;
+non terminal String print;
+non terminal String[] room_ref;
+
+//////////////////////////////////
+/////////// PRECEDENCE ///////////
+//////////////////////////////////
+precedence left OR;
+precedence left AND;
+precedence left NOT;
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+start with prog;
+
+prog ::= header SEP house_section SEP preferences
+;
+
+// header
+header ::= tok3 TOK1 tok3 TOK2 tok3
+    | tok3 TOK2 tok3 TOK1 tok3
+;
+
+tok3 ::= | tok3 TOK3;
+
+
+// house ==================================================
+house_section ::= house house 
+    | house_section house house
+;
+
+house ::= HOUSE type:type STARTER room_list:list END {:
+    symbol_table.put(type, list);
+:};
+
+room_list ::= room:room  {:
+        HashMap<String, Room> list = new HashMap<String, Room>();
+        list.put(room.name, room);
+        RESULT = list;
+    :}
+    | room_list:list COMMA room:r{:
+        
+        list.put(r.name, r);
+        RESULT = list;
+    :};
+
+room ::= room_name:name size:size {:
+    RESULT = (Room) new Room(name, size);
+:};
+
+type ::= QUOTEDS:str {: RESULT = str; :};
+room_name ::= QUOTEDS:str {: RESULT = str; :};
+size ::= INT:x {: RESULT = x; :};
+
+// preferences ============================================
+preferences ::= | if_commands;
+
+if_commands ::= iff 
+    | if_commands iff
+;
+
+iff ::= IF bool_expr:expr THEN print_list:list FI {:
+    if(expr){
+        for (String str : list){
+            System.out.println(str);
+        }
+    }
+:};
+
+room_ref ::= type:t DOT room_name:n {:
+    String[] res = {t, n};
+    RESULT = res;
+:};
+
+print_list ::= print:a {: 
+        ArrayList<String> tmp = new ArrayList<String>();
+        tmp.add(a);
+        RESULT = tmp;
+    :}
+
+    | print_list:a print:p {:
+        a.add(p);
+        RESULT = a;
+    :}
+;
+
+print ::= PRINT QUOTEDS:str PV {:
+    RESULT = str;
+:};
+
+
+bool_expr ::= bool_val:a          {:RESULT = a;:}
+    | room_ref:ref EQEQ size:s    {: 
+        HashMap<String, Room> house = (HashMap<String, Room>) symbol_table.get(ref[0]);
+        Integer size = house.get(ref[1]).size;
+        RESULT = (size == s);  
+    :}
+
+    | bool_expr:a AND bool_expr:b  {:RESULT = a && b;:}
+    | bool_expr:a OR bool_expr:b   {:RESULT = a || b;:}
+    | RO bool_expr:a RC            {:RESULT = a;:}
+    | NOT bool_expr:a              {:RESULT = !a;:}
+;
+
+bool_val ::= TRUE {:RESULT = true;:} | FALSE {:RESULT = false;:};

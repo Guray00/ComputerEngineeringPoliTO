@@ -1,0 +1,220 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.util.Iterator;
+
+
+init with {:
+    symbol_table = new HashMap();
+:};
+
+parser code {:
+    public HashMap symbol_table;
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {
+        m.append(" in line " + (current_symbol.left+1));   
+	    m.append(", column " + (current_symbol.right+1));
+      }
+
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	  System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+action code{:
+    public class Power{
+        public Double battery;
+        public Double fuel;
+        
+        public Power(){
+            battery = 100.0;
+            fuel = 100.0;
+            System.out.println(this);
+        }
+        
+        public Power(Double b, Double f){
+            battery = b;
+            fuel = f;
+            System.out.println(this);
+        }
+        
+        public void use(int type, Double value){
+            if (type == 0){
+                this.battery -= value;
+            }
+            else {
+                this.fuel -= value;
+            }
+
+            System.out.println(this);
+        }
+
+        public void mod(int type, Double value){
+
+            if (type == 0){
+                this.battery += value;
+            }
+            else {
+                this.fuel += value;
+            }
+
+            System.out.println(this);
+        }
+        
+        @Override
+        public String toString(){
+            return "battery="+ battery + " fuel="+ fuel;
+        }
+    }
+:}
+
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal SEP, TOK1, TOK2;
+
+terminal Double REAL;
+
+terminal PV, COMMA, MINUS;
+terminal BATTERY, KWH;
+terminal STARTER;
+terminal LITERS, FUEL;
+
+terminal PLUS, STAR, MAX;
+terminal RO, RC;
+
+terminal UNITSKM, DO, USE, MOD, KM, DONE;
+
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+
+non terminal Object prog;
+
+non terminal header;
+non terminal tok1;
+
+non terminal run;
+non terminal command;
+non terminal Double battery_ass, fuel_ass;
+non terminal Double exp;
+non terminal ArrayList<Double> exp_list;
+non terminal command_list;
+non terminal Power start_instruction;
+non terminal Double max;
+
+non terminal mod, use;
+non terminal Integer power_type;
+non terminal Double cons;
+non terminal ArrayList<Double> cons_list;
+
+non terminal Power NT0, NT1;
+
+//////////////////////////////////
+/////////// PRECEDENCE ///////////
+//////////////////////////////////
+
+precedence left PLUS;
+precedence left STAR;
+
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+start with prog;
+
+prog ::= header SEP run;
+
+// header ==================================================================
+tok1 ::=  | tok1 TOK1;
+
+header ::= tok1 | tok1 TOK2 tok1
+    | tok1 TOK2 tok1 TOK2 tok1
+    | tok1 TOK2 tok1 TOK2 tok1 TOK2 tok1
+    | tok1 TOK2 tok1 TOK2 tok1 TOK2 tok1 TOK2 tok1
+;
+
+
+// RUN =====================================================================
+
+NT0 ::=  {: RESULT = (Power) parser.stack(0); :};
+NT1 ::=  {: RESULT = (Power) parser.stack(-1); :};
+
+run ::= start_instruction NT0 command_list;
+command_list ::= NT0 command NT1 command NT1 command NT1 command
+    | command_list NT1 command NT1 command
+;
+
+start_instruction ::= STARTER battery_ass:b MINUS fuel_ass:f PV {: RESULT = new Power(b, f);:}
+    | STARTER fuel_ass:f MINUS battery_ass:b PV {: RESULT = new Power(b, f);:}
+    | STARTER MINUS battery_ass:b PV {: RESULT = new Power(b, 100.0);:}
+    | STARTER MINUS fuel_ass:f PV {: RESULT = new Power(100.0, f);:}
+    | STARTER fuel_ass:f MINUS PV {: RESULT = new Power(100.0, f);:}
+    | STARTER battery_ass:b MINUS PV {: RESULT = new Power(b, 100.0);:}
+    | STARTER MINUS PV {: RESULT = new Power();:}
+;
+
+battery_ass ::= BATTERY exp:value KWH {:RESULT = value; :};
+fuel_ass ::= FUEL exp:value LITERS {: RESULT = value; :};
+
+exp ::= REAL:num {: RESULT = num; :}
+    | max:max    {: RESULT = max; :}
+    | exp:a PLUS exp:b {: RESULT = a+b; :}
+    | exp:a STAR exp:b {: RESULT = a*b; :}
+;
+
+max ::= MAX RO exp_list:list RC {:
+
+    Double tmp = 0.0;
+    for (Double d : list){
+        if (d>tmp){
+            tmp = d;
+        }
+    }
+    
+    RESULT = tmp;
+:};
+
+exp_list ::= exp:value {: ArrayList list = new ArrayList<Double>(); list.add(value); RESULT = list; :}
+    | exp_list:list COMMA exp:value {: list.add(value); RESULT = list; :}
+;
+
+command ::= use
+    | mod
+;
+
+mod ::= NT0:power MOD power_type:p exp:value PV {:
+   power.mod(p, value);
+:};
+
+use ::= NT0:power USE power_type:p DO cons_list:value DONE PV {:
+
+    for (Double d : value){
+       power.use(p, d);
+    }
+:};
+
+cons_list ::= cons: a {:RESULT = new ArrayList<Double>(); RESULT.add(a); :}
+| cons_list:a cons:b {: a.add(b); RESULT = a; :};
+
+cons ::= exp:a KM exp:b UNITSKM PV {:
+    RESULT = a*b;
+:};
+
+power_type ::= BATTERY  {: RESULT = 0; :}
+    | FUEL {: RESULT = 1; :}
+;

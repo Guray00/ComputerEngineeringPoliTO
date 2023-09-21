@@ -1,0 +1,256 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.util.Iterator;
+
+
+init with {:
+    symbol_table = new HashMap();
+:};
+
+parser code {:
+    public HashMap symbol_table;
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {                
+        m.append(" in line " + (current_symbol.left+1));   
+	    m.append(", column " + (current_symbol.right+1));
+      }
+
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	  System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+action code{:
+
+    public class FoodEntry {
+        public String name;
+        public Double value;
+
+        public FoodEntry(String n, Double d){
+            name = n;
+            value = d;
+        }
+    }
+    
+    public  class Ingredient {
+        public String category;
+        public String name;
+        public Double price;
+        
+        public Ingredient(String category, String name, Double price){
+            this.category = category;
+            this.name = name;
+            this.price = price;
+        }
+
+        @Override
+        public String toString(){
+            return this.name + " " + String.format(Locale.US, "%.2f", this.price) + " EURO";
+        }
+    }
+    
+    public class Recipe {
+        public String name;
+        public ArrayList<Ingredient> ingredients;
+
+        public Recipe(String name, ArrayList<Ingredient> i){
+            this.name = name;
+            ingredients = i;
+        }
+
+        @Override
+        public String toString(){
+            String out = this.name+"\n";
+            Double tot = 0.0;
+            for (Ingredient i : ingredients){
+                out += i.toString()+"\n";
+                tot += i.price;
+            }
+            out+= "TOT: " + String.format(Locale.US, "%.2f", tot) + " EURO";
+            return out;
+        }
+    }
+:}
+
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal String QUOTEDS;
+terminal SEP, TOK1, TOK2;
+
+terminal SO, SC; 
+terminal PV, COMMA, DOT;
+
+terminal DD;
+terminal EUROKG;
+terminal KG;
+terminal Double REAL;
+terminal Integer INT;
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+
+non terminal Object prog;
+
+non terminal header;
+non terminal header_toks;
+non terminal tok2;
+
+non terminal food_section, food_section_, food_category;
+
+non terminal ArrayList<FoodEntry> food_list;
+non terminal FoodEntry food;
+non terminal String food_category_name, food_name;
+non terminal Double kg_price;
+
+non terminal recipes;
+non terminal Recipe recipe;
+non terminal String recipe_name;
+non terminal ArrayList<Ingredient> ingredient_list;
+non terminal Ingredient ingredient;
+non terminal Double weight;
+non terminal Integer NT0, NT1, NT2;
+
+//////////////////////////////////
+/////////// PRECEDENCE ///////////
+//////////////////////////////////
+
+precedence left KG;
+precedence left EUROKG;
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+start with prog;
+
+// REAL DEFINITION
+prog ::= header SEP food_section_ SEP recipes;
+
+
+// HEADER  ==================================================================
+header ::= header_toks;
+header_toks ::= tok2 TOK1 | TOK2 TOK1 TOK2 | tok2 TOK1 tok2 |TOK1 tok2;
+tok2 ::= tok2 TOK2 | TOK2 TOK2;
+
+
+
+// FOOD =====================================================================
+
+food_section_ ::= food_section {:
+    FoodEntry lower = null;
+    FoodEntry upper = null;
+    
+    Set<String> keys = symbol_table.keySet();
+    for (String k : keys){
+        
+        ArrayList<FoodEntry> list = (ArrayList<FoodEntry>) symbol_table.get(k);
+        
+        for (FoodEntry f : list){
+            if (lower == null || f.value < lower.value){
+                lower = f;
+            }
+
+            if (upper == null || f.value > upper.value){
+                 upper = f;
+            }
+        }
+    }
+
+    System.out.println("Less expensive: " + lower.name + " " + lower.value + " EURO/kg");
+    System.out.println("More expensive: " + upper.name + " " + upper.value + " EURO/kg");
+    System.out.println("----");
+:};
+
+food_section ::=   | food_section food_category food_category;
+
+food_category ::= food_category_name:category DD SO food_list:list SC PV {:
+
+    // inserisco nella hashmap una entry che contiene la lista di cibo
+    symbol_table.put(category, list);   
+:};
+
+food_list ::= food:f {:
+        RESULT = new ArrayList<FoodEntry>();
+        RESULT.add(f);
+    :}
+    | food_list:list COMMA food:f {:
+        list.add(f);
+        RESULT = list;
+     :}
+;
+
+food ::= food_name:name DD kg_price:price EUROKG {:
+    RESULT = new FoodEntry(name, price);
+:};
+
+food_name ::= QUOTEDS:str           {: RESULT = new String(str); :};
+food_category_name ::= QUOTEDS:str  {: RESULT = new String(str); :};
+
+kg_price ::= REAL:value             {: RESULT = value; :};
+
+
+// RECIPES ============================================================
+recipes ::=  | recipes recipe;
+
+NT2 ::= {:
+    RESULT = (Integer) parser.stack(-2);
+:};
+
+NT1 ::= {:
+    RESULT = (Integer) parser.stack(-1);
+:};
+
+NT0 ::= {:
+    RESULT = (Integer) parser.stack(0);
+:};
+
+
+
+
+recipe ::= INT recipe_name:name DD NT2 ingredient_list:list PV {:
+            Recipe r = new Recipe(name, list);
+            System.out.println(r);
+      :}
+
+    | INT recipe_name:name NT1 ingredient_list:list PV {:
+        Recipe r = new Recipe(name, list);
+        System.out.println(r);
+      :}
+;
+
+ingredient_list ::= NT0 ingredient:i {: RESULT = new ArrayList<Ingredient>(); RESULT.add(i); :}
+    | ingredient_list:list COMMA NT2 ingredient:i {:
+        list.add(i); 
+        RESULT = list;
+      :};
+
+ingredient ::= NT0:number food_category_name:category DOT food_name:name weight:w KG {:
+
+    Double price = 0.0;
+
+    for (FoodEntry f : (ArrayList<FoodEntry>) symbol_table.get(category)){
+        if (f.name.equals(name)){
+            price = f.value * w * (number);
+        }
+    }
+    
+    RESULT = new Ingredient(category, name, price);
+:};
+
+recipe_name ::= QUOTEDS:str {: RESULT = new String(str); :};
+weight ::= REAL:num         {: RESULT = num; :};

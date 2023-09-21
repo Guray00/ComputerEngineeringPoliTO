@@ -1,0 +1,174 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+import java.util.Iterator;
+
+
+init with {:
+    symbol_table = new HashMap();
+:};
+
+parser code {:
+    public HashMap symbol_table;
+
+    public void syntax_error(Symbol current_symbol) {
+      StringBuffer m = new StringBuffer("Error");
+
+      if (current_symbol.left != -1) {                
+        m.append(" in line " + (current_symbol.left+1));   
+	    m.append(", column " + (current_symbol.right+1));
+      }
+
+      m.append(", symbol: " + (current_symbol));
+      m.append(" : Syntax Error");
+   
+  	  System.err.println(m);
+    } 
+
+    public Object stack(int position) {
+      return (((Symbol)stack.elementAt(tos+position)).value);
+    }
+:};
+
+
+//////////////////////////////////
+/////// TERMINAL SYMBOLS /////////
+//////////////////////////////////
+
+terminal SEP, TOK1, TOK2, TOK3;
+
+// types
+terminal String QUOTEDS;
+terminal String VAR;
+
+// symbols
+terminal PV;
+terminal COMMA;
+
+// brackets
+terminal RO, RC; // ()
+terminal SO, SC; // []
+
+terminal CMP, WITH, PRINT, FZ_AND;
+terminal AND, OR, NOT, TRUE, FALSE, EQ;
+
+//////////////////////////////////////
+//////// NON TERMINAL SYMBOLS ////////
+//////////////////////////////////////
+
+
+non terminal Object prog;
+
+// header
+non terminal header;
+non terminal tok13;
+
+// code
+non terminal command_section;
+non terminal command_list;
+non terminal command;
+non terminal assignment;
+non terminal cmp;
+non terminal act;
+non terminal print;
+non terminal action_list;
+non terminal ArrayList<Boolean> bool_list;
+non terminal Boolean bool_expr;
+non terminal Boolean bool_val;
+non terminal Boolean fz_and;
+
+//////////////////////////////////
+/////////// PRECEDENCE ///////////
+//////////////////////////////////
+
+precedence left VAR, CMP;
+
+precedence left OR;
+precedence left AND;
+precedence left NOT;
+
+/////////////////////
+////// PARSER ///////
+/////////////////////
+start with prog;
+
+prog ::= header SEP command_section
+;
+
+// header =====================================================
+tok13 ::= | tok13 TOK1 | tok13 TOK3;
+header ::= tok13 | tok13 TOK2 tok13
+    | tok13 TOK2 tok13 TOK2 tok13 TOK2 tok13 TOK2 tok13
+;
+
+// code =======================================================
+command_section ::= command_list;
+
+command_list ::= 
+    | command command command command 
+    | command_list command command
+;
+
+command ::= assignment
+    | cmp
+;
+
+assignment ::= VAR:name EQ bool_expr:res PV {:
+    symbol_table.put(name, res);
+    
+    System.out.print(name + " ");
+    
+    if (res) System.out.println("T");
+    else System.out.println("F");
+
+:};
+
+cmp ::= CMP bool_expr action_list;
+
+action_list ::= act:a {:
+        RESULT = (Boolean) a; 
+    :}
+    | action_list:a act {: 
+        RESULT = (Boolean) a;
+    :};
+    
+act ::= WITH bool_expr:b SO print SC {: RESULT = (Boolean) b; :};
+
+print ::= PRINT RO QUOTEDS:str RC PV {:
+    Boolean a = (Boolean) parser.stack(-6);
+    Boolean b = (Boolean) parser.stack(-8);
+    
+    if (a == b){
+        System.out.println(str);
+    }
+:};
+
+bool_list ::= bool_expr:e {: RESULT = new ArrayList<Boolean>(); RESULT.add(e); :}
+    | bool_list:list COMMA bool_expr:e{:
+        list.add(e);
+        RESULT = list;
+    :}
+;
+
+fz_and ::= FZ_AND RO bool_list:list RC {:
+
+    Boolean result = list.get(0);
+
+    for (Boolean b : list){
+        result = result & b;
+    }
+
+    RESULT = result;
+:};
+
+bool_expr ::= bool_val:a            {:RESULT = a;:}
+  | VAR:v                           {:RESULT = (Boolean)symbol_table.get(v);:}
+  | fz_and:v                        {:RESULT = v;:}
+  | bool_expr:a AND bool_expr:b     {:RESULT = a && b;:}
+  | bool_expr:a OR bool_expr:b      {:RESULT = a || b;:}
+  | RO bool_expr:a RC               {:RESULT = a;:}
+  | NOT bool_expr:a                 {:RESULT = !a;:}
+;
+
+bool_val ::= TRUE {:RESULT = true;:}
+| FALSE {:RESULT = false;:};

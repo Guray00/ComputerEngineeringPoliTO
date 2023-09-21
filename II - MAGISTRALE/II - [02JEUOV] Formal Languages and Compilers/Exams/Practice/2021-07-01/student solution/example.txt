@@ -1,0 +1,20 @@
+(* Header section: second type of header *)
+Y-101-101100-1010001-101 ; (* tok2 *)
+X-10:01:59aabbaabbaa; (* tok1 *)
+Y-1011-101000-1010001-111 ; (* tok2 *)
+X-23:44:59; (* tok1 *)
+
+#### (* division between header and warehouse sections *)
+
+(* Row material in the warehouse *)
+{
+    "plastic" 12.00 euro/kg,
+    "iron" 5.00 euro/kg,
+    "steel" 10.00 euro/kg
+} "component";
+
+{ "gpl" 0.63 euro/kg, "methane" 1.05 euro/kg } "energy";
+
+#### (* division between warehouse and products sections *)
+2.00 euro "Steel pots" : "component" { "steel" 10 kg , "plastic" 1 kg }, "energy" { "methane" 1 kg };
+1.00 euro "Plastic glasses" : "component" { "plastic" 1 kg }, "energy" { "methane" 1 kg };

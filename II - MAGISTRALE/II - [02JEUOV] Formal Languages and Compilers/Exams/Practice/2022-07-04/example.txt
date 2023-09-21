@@ -1,0 +1,23 @@
+[[-- Header section: of type 1 --]]
+R-XXXXXXXX ; [[-- tok2 --]]
+R-XXYYXXYYXX???? ; [[-- tok2 --]]
+R-XXYYXXYYZZXXYYXX; [[-- tok2 --]]
+D-05/August/2022 ; [[-- tok1 --]]
+N-2B*Bc2*bC2/aaa/aAa; [[-- tok3 --]]
+D-10/August/2022-03/January/2023 ; [[-- tok1 --]]
+==== [[-- division between header and execution sections --]]
+x = TRUE & FALSE; [[-- x = FALSE --]]
+y = TRUE; [[-- y = TRUE --]]
+z = FALSE | FALSE & FALSE; [[-- z = FALSE | FALSE = FALSE --]]
+IF ! x | (TRUE & TRUE) [[-- TRUE --]]
+OR x | x DO [[-- TRUE OR FALSE -> Executed --]]
+PRINT "one";
+DONE
+AND FALSE DO [[-- TRUE AND FALSE -> Not Executed --]]
+PRINT "two";
+DONE
+AND TRUE DO [[-- TRUE AND TRUE -> Executed --]]
+PRINT "three";
+DONE
+FI
+x = TRUE; [[-- x = FALSE --]]

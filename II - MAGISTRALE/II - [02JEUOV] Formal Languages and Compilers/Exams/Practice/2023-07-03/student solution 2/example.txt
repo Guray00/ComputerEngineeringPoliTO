@@ -1,0 +1,22 @@
+08:34:10;   <* tk3 *>
+2023/09/07; <* tk2 *>
+10:12;      <* tk3 *>
+!!!!!!-12;  <* tk1 *>
+$$$$$
+house "three-room" start
+   "kitchen" 10, "living" 12, "bedroom" 8, "bathroom" 3
+end
+house "one-room" start
+   "kitchen-bedroom" 13, "bathroom" 2
+end
+$$$
+<* false or true and true = true *>
+if "three-room"."living" == 6 or "three-room"."living" == 12 and "three-room"."kitchen" == 10 then
+   print "house";
+   print "found";
+fi
+<* not ( true or true) = false *>
+if not ("one-room"."kitchen-bedroom" == 13 or "one-room"."bathroom" == 2) then
+   print "not found";
+fi
+
