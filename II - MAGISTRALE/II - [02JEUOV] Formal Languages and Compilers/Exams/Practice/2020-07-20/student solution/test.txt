@@ -10,14 +10,14 @@ b = 2 + 3 * 2; (++ assigns 2+6=8 to var b ++)
 c = (a + 1) * 2; (++ assigns 3*2=6 to var c ++)
 compare 3+a with (++ 3+a=5 ++)
 3*a { (++ FALSE ++)
-print 3;
-print a+1;
+	print 3;
+	print a+1;
 }
 1+ 2*2 { (++ TRUE ++)
-print 2; (++ print 2 ++)
-print 3; (++ print 3 ++)
+	print 2; (++ print 2 ++)
+	print 3; (++ print 3 ++)
 }
 b-3 { (++ TRUE ++)
-print a*2; (++ print 4 ++)
+	print a*2; (++ print 4 ++)
 }
 end;

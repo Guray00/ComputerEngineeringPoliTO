@@ -10,9 +10,7 @@ import java_cup.runtime.*;
 
 uint = 0 | [1-9][0-9]*
 id = [a-zA-Z_][a-zA-Z0-9_]*
-// hexnum = [0-9a-fA-F]
-// real = ("+" | "-")? ((0\.[0-9]*) | [1-9][0-9]*\.[0-9]* | \.[0-9]+ | [1-9][0-9]*\. | 0\.)
-// qstring = \" ~  \"
+
 comment = \(\+\+ (.*) \+\+\)
 token1 = ({letters}#({hexNum})?)
 letters = ((a | b | c){7}((a | b | c){2})*)
@@ -21,14 +19,6 @@ hexNum = ((\-5[aAcC]) | (\-[1-4][02468aAcC]) | (\-[2468aAcC]) | (2468aAcC) | ([1
 token2 = (({hour})\:({binNum}))
 hour = ((07\:13\:2[4-9]) | (07\:13\:[3-5][0-9]) | (07\:1[4-5]\:[0-5][0-9]) | (07\:[2-5][0-9]\:[0-5][0-9]) | (0[8-9]\:[0-5][0-9]\:[0-5][0-9]) | (1[0-6]\:[0-5][0-9]\:[0-5][0-9]) | (17\:[0-2][0-9]\:[0-5][0-9]) | (17\:3[0-6]\:[0-5][0-9]) | (17\:37\:[0-3][0-9]) | (17\:37\:4[0-3]))
 binNum = ((101) | (1[0-1][0-1][0-1]) | (10[0-1][0-1][0-1]) | (110[0-1][0-1]) | (1100[0-1]) | (11010))
-// 11010
-// comment = \(\+\+ (.*) \+\+\)
-// sep = "==="
-// nl = \r | \n | \r\n
-// cpp_comment = "/-" ~ "-/"
-// {sep} {return new Symbol(sym.SEP,yyline,yycolumn);}
-// {qstring} {return new Symbol(sym.QSTRING,yyline,yycolumn,new String(yytext()));}
-// {real} {return new Symbol(sym.REAL,yyline,yycolumn, new Double(yytext()));}
 
 %%
 "$$" {return new Symbol(sym.DIVIDER,yyline,yycolumn);}

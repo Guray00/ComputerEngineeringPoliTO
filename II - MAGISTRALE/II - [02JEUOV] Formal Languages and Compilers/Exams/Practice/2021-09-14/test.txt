@@ -1,0 +1,20 @@
+
+I_28/02/2022:08:10;
+K_hellooo0011001101 ;
+I_31/12/2021 ;
+K_hello ;
+J_3b*3B+3C-aaa-123+9a+99+9B;  +-- tok2 --+
+====  
++-- division between header and simulation sections --+
+INIT HEIGHT = 20, SPEED = 10;   +-- HEIGHT=20, SPEED=10 --+
+HEIGHT = HEIGHT SUM 10 MUL 2;   +-- HEIGHT=20+10*2=20+20=40 --+
+COND [ HEIGHT SUM 1 > SPEED MUL 2 ]  +-- 41>20 -> true --+
+UPDATE
+    HEIGHT = 10 SUM 3;          +-- HEIGHT=10+3=13 --+
+    SPEED = 10 SUM 3 SUM SPEED; +-- SPEED=10+3+10=23 --+
+DONE;
+COND [ ]
+UPDATE
+    HEIGHT = 3;
+DONE;
+
