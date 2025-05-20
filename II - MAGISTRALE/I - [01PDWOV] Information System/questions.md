@@ -4,6 +4,12 @@ The following questions are taken from the past exams of the course "Information
 
 ## Chapter 1 - Definitions
 
+### (G) Difference between CAPEX (Capital Expenditures) e OPEX (Operating Expenditures)  
+
+With CAPEX (Capital Expenditures), companies invest in long-term assets like machinery, buildings, or technology infrastructure. These costs are capitalized and amortized over time. Examples include purchasing machinery, constructing a building, or acquiring proprietary software.
+
+OPEX (Operating Expenditures) are the day-to-day costs of running a business. These expenses are fully deducted in the year they are incurred. Examples include rent, utilities, salaries, and maintenance costs.
+
 ### Write one or more examples of technological innovations that deeply impacted a business domain, and therefore the strategy of companies within the domain
 
 > Generated answer
@@ -146,7 +152,7 @@ The main modules are:
 - **modularity**: the companies that produces software sells different modules that fits different business functions.
 - **Prescriptivity**:the ERP sold is, usually, the same for every customer with a limited capability of customization.
 
-### Define the meaning of 'prescriptivity', its pros and cons
+### Define the meaning of prescriptivity, its pros and cons
 
 Prescriptivity refers to how strictly predefined rules, processes, or standards must be followed in a system. In software, it means how rigidly the system enforces specific ways of doing things.
 
@@ -268,21 +274,23 @@ Quality, cost, reliability, dealer’s network, brand recognition.
 
 ### Consider a car glass manufacturer. Define, using the Balanced Score Card (BSC) approach one meaningful indicator in each dimension of BSC
 
-BSC perspectives: financial, customer (value proposition), internal process, innovation and learning.
-Indicators for each dimension: Financial → cash flow; Customer → customer satisfaction;
-Internal process → performance quality; Innovation and learning → employee turnover
+Indicators for each dimension:
+
+- **Financial** → cash flow
+- **Customer** → customer satisfaction
+- **Internal process** → performance quality
+- **Innovation and learning** → employee turnover
 
 ### Consider a company that produces processed food (ex. canned meat, snacks). Define, using the Balanced Score Card (BSC) approach one meaningful indicator in each dimension of BSC.
 
 Indicators for each dimension:
 
-Financial → cash flow; Customer → quality; Internal process → performance quality;
-Innovation and learning → employee turnover
-
-
+- **Financial** → cash flow
+- **Customer** → quality
+- **Internal process** → performance quality
+- **Innovation and learning** → employee turnover
 
 ## Chapter 6 - Organization
-
 
 ### In organizational terms, what is a ‘Machine bureaucracy’?
 
@@ -538,6 +546,8 @@ Value of service depends on number of users, and grows way more than linearly wi
 
 For example: telephone network, social network.
 
+### List a few principles to be applied in process redesign
+
 ### When doing process redesign, four dimensions should be considered and flexibility. Define the meaning of 'flexibility' in this context
 
 - Capability of process to react (possibly with no changes on time cost quality)
@@ -779,7 +789,7 @@ The product innovation business model prioritizes creating value through **conti
 
 > notes
 
-The David Gleicher formula (D ∗ V ∗ F > R) says that: Dissatisfaction for current situation, Vision (capability to define the future situation) and First steps (quantity and quality of actions to support the transition) must overcome Resistance to change.
+The David Gleicher formula (D * V * F > R) says that: Dissatisfaction for current situation, Vision (capability to define the future situation) and First steps (quantity and quality of actions to support the transition) must overcome Resistance to change.
 
 The resistance to change is also function of the type of of change:
 
@@ -902,6 +912,11 @@ Porter defined the 5 forces model that identifies and analyzes five competitive 
 - **Intensity of rivalry**: how many competitors are in the market
 
 An example could be kodak vs Fuji: while Fuji changing is business sector from the picture domain to the chemical products that allowed to increase its lifespan, Kodak decided to remain in the cameras sector taking a wrong strategic decision.
+
+### List the key factors to consider in selecting a software product to support an IS
+
+See slides
+
 
 ---
 
